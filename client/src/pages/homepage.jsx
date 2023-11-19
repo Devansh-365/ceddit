@@ -12,8 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { FcAssistant, FcDonate, FcInTransit } from "react-icons/fc";
 import { Layout } from "../components/layout";
+import usePageMeta from "../utils/meta";
 
 const Feature = ({ title, text, icon }) => {
+  usePageMeta();
+
   return (
     <Stack>
       <Flex

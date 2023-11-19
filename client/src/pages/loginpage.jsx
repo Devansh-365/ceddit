@@ -4,8 +4,10 @@ import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import InputItem from "../components/ui/input";
 import { login } from "../api/users";
 import { Link, useNavigate } from "react-router-dom";
+import usePageMeta from "../utils/meta";
 
 export const LoginPage = () => {
+  usePageMeta("Ceddit | Login");
   const navigate = useNavigate();
 
   const [form, setForm] = useState({

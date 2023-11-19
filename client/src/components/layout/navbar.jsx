@@ -13,6 +13,12 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  MenuList,
+  MenuItem,
+  MenuButton,
+  Menu,
+  Avatar,
+  MenuDivider,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -20,9 +26,13 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { isLoggedIn, logoutUser } from "../../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
+  const user = isLoggedIn();
+  const navigate = useNavigate();
 
   return (
     <Box>
@@ -68,36 +78,76 @@ export default function Navbar() {
           </Flex>
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
-          direction={"row"}
-          spacing={6}
-        >
-          <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href={"/login"}
+        {user ? (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
           >
-            Login
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"blue.400"}
-            href={"/register"}
-            _hover={{
-              bg: "blue.300",
-            }}
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}
+                minW={0}
+              >
+                <Avatar
+                  size={"sm"}
+                  src={
+                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                  }
+                />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>Explore</MenuItem>
+                <MenuDivider />
+                <MenuItem
+                  as={"button"}
+                  onClick={() => {
+                    logoutUser();
+                    navigate(0);
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Stack>
+        ) : (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
           >
-            Register
-          </Button>
-        </Stack>
+            <Button
+              as={"a"}
+              fontSize={"sm"}
+              fontWeight={400}
+              variant={"link"}
+              href={"/login"}
+            >
+              Login
+            </Button>
+            <Button
+              as={"a"}
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"blue.400"}
+              href={"/register"}
+              _hover={{
+                bg: "blue.300",
+              }}
+            >
+              Register
+            </Button>
+          </Stack>
+        )}
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
@@ -264,11 +314,11 @@ const MobileNavItem = ({ label, children, href }) => {
 
 const NAV_ITEMS = [
   {
-    label: "Learn Design",
+    label: "Explore",
     href: "#",
   },
-  {
-    label: "Hire Designers",
-    href: "#",
-  },
+  // {
+  //   label: "Hire Designers",
+  //   href: "#",
+  // },
 ];

@@ -2,7 +2,7 @@ import { BASE_URL } from "../config";
 
 const register = async (user) => {
   try {
-    const res = await fetch(BASE_URL + "api/users/register", {
+    const res = await fetch(BASE_URL + "api/auth/register", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -18,7 +18,7 @@ const register = async (user) => {
 
 const login = async (user) => {
   try {
-    const res = await fetch(BASE_URL + "api/users/login", {
+    const res = await fetch(BASE_URL + "api/auth/login", {
       method: "POST",
       headers: {
         Accept: "application/json",

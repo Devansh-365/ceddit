@@ -3,8 +3,9 @@ import { Layout } from "../components/layout";
 import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import InputItem from "../components/ui/input";
 import { register } from "../api/users";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import usePageMeta from "../utils/meta";
+import { loginUser } from "../utils/auth";
 
 export const RegisterPage = () => {
   usePageMeta("Ceddit | Register");
@@ -12,7 +13,7 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    nameL: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -29,7 +30,7 @@ export const RegisterPage = () => {
     if (data.error) {
       setFormError(data.error);
     } else {
-      //   loginUser(data);
+      loginUser(data);
       navigate("/");
     }
   };
@@ -55,8 +56,8 @@ export const RegisterPage = () => {
         <Heading>Register</Heading>
         <form style={{ width: "100%" }} onSubmit={onSubmit}>
           <InputItem
-            name="name"
-            placeholder="name"
+            name="username"
+            placeholder="username"
             type="text"
             mb={2}
             onChange={onChange}

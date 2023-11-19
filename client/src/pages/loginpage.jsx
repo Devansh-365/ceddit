@@ -3,8 +3,9 @@ import { Layout } from "../components/layout";
 import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import InputItem from "../components/ui/input";
 import { login } from "../api/users";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import usePageMeta from "../utils/meta";
+import { loginUser } from "../utils/auth";
 
 export const LoginPage = () => {
   usePageMeta("Ceddit | Login");
@@ -27,7 +28,7 @@ export const LoginPage = () => {
     if (data.error) {
       setFormError(data.error);
     } else {
-      //   loginUser(data);
+      loginUser(data);
       navigate("/");
     }
   };

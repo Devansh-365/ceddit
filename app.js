@@ -1,17 +1,20 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
-const config = require("dotenv").config();
+const dotenv = require("dotenv");
 const connect = require("./utils/connect");
-const userRouter= require("./Routes/userRoutes");
+const users = require("./routes/user.route");
+
+dotenv.config();
+
 app.use(express.json());
 app.use(cors());
 
 const port = process.env.PORT || 4000;
-app.use('/user',userRouter);
+
+app.use("/api/auth", users);
+
 app.listen(port, () => {
   console.log(`App started at http://localhost:${port}`);
-  connect()
- 
+  connect();
 });

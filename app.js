@@ -16,7 +16,7 @@ const port = process.env.PORT || 4000;
 
 app.use("/api/auth", users);
 app.use("/api/posts", posts);
-app.use("/api/community", community);
+app.use("/api/communities", community);
 
 app.listen(port, () => {
   console.log(`App started at http://localhost:${port}`);

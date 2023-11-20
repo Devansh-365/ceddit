@@ -10,7 +10,7 @@ const verifyToken = (req, res, next) => {
 
     const { userId, isAdmin } = jwt.verify(token, process.env.TOKEN_KEY);
 
-    req.body = {
+    req.user = {
       ...req.body,
       userId,
       isAdmin,

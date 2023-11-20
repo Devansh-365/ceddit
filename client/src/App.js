@@ -1,20 +1,23 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
+import { Route, Routes, HashRouter as Router } from "react-router-dom";
 import { Homepage } from "./pages/homepage";
 import { LoginPage } from "./pages/loginpage";
 import { RegisterPage } from "./pages/registerpage";
+import { CommunityPage } from "./pages/community-page";
+import { ExplorePage } from "./pages/explore-page";
 
 function App() {
   return (
-    <div className="">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/community" element={<CommunityPage />} />
+      </Routes>
+    </>
   );
 }
 

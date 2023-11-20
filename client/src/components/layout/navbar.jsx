@@ -34,6 +34,10 @@ export default function Navbar() {
   const user = isLoggedIn();
   const navigate = useNavigate();
 
+  function getRandomInt() {
+    return Math.floor(Math.random() * (10000 - 5)) + 4;
+  }
+
   return (
     <Box>
       <Flex
@@ -96,7 +100,9 @@ export default function Navbar() {
                 <Avatar
                   size={"sm"}
                   src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                    "http://graph.facebook.com/v2.5/" +
+                    getRandomInt() +
+                    "/picture?height=200&height=200"
                   }
                 />
               </MenuButton>
@@ -315,7 +321,7 @@ const MobileNavItem = ({ label, children, href }) => {
 const NAV_ITEMS = [
   {
     label: "Explore",
-    href: "#",
+    href: "/explore",
   },
   // {
   //   label: "Hire Designers",

@@ -56,6 +56,10 @@ const SocialButton = ({ children, label, href }) => {
 };
 
 export default function Footer() {
+  function getCurrentYear() {
+    return new Date().getFullYear();
+  }
+
   return (
     <Box
       bg={useColorModeValue("gray.50", "gray.900")}
@@ -68,12 +72,12 @@ export default function Footer() {
         py={4}
         direction={{ base: "column", md: "row" }}
         spacing={4}
-        justify={{ base: "center", md: "space-between" }}
+        justify={{ base: "center", md: "center" }}
         align={{ base: "center", md: "center" }}
       >
-        <Logo />
-        <Text>© 2022 Chakra Templates. All rights reserved</Text>
-        <Stack direction={"row"} spacing={6}>
+        {/* <Logo /> */}
+        <Text>© {getCurrentYear()} Ceddit. All rights reserved</Text>
+        {/* <Stack direction={"row"} spacing={6}>
           <SocialButton label={"Twitter"} href={"#"}>
             <FaTwitter />
           </SocialButton>
@@ -83,7 +87,7 @@ export default function Footer() {
           <SocialButton label={"Instagram"} href={"#"}>
             <FaInstagram />
           </SocialButton>
-        </Stack>
+        </Stack> */}
       </Container>
     </Box>
   );

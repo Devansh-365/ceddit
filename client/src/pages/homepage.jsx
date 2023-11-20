@@ -18,7 +18,13 @@ const Feature = ({ title, text, icon }) => {
   usePageMeta();
 
   return (
-    <Stack>
+    <Stack
+      display={"flex"}
+      flexDirection={"column"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      textAlign={"center"}
+    >
       <Flex
         w={16}
         h={16}
@@ -96,6 +102,7 @@ export const Homepage = () => {
           py={{ base: 6, md: 12 }}
           columns={{ base: 1, md: 3 }}
           spacing={10}
+          mt={4}
         >
           <Feature
             icon={<Icon as={FcAssistant} w={10} h={10} />}

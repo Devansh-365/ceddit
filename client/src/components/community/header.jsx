@@ -2,7 +2,8 @@ import React from "react";
 import { Box, Button, Flex, Icon, Text, Image } from "@chakra-ui/react";
 import { FaReddit } from "react-icons/fa";
 
-const Header = () => {
+const Header = ({ community }) => {
+  console.log("COMMUNITY : ", community);
   /**
    * !!!Don't pass communityData boolean until the end
    * It's a small optimization!!!
@@ -44,7 +45,7 @@ const Header = () => {
           <Flex padding="10px 16px">
             <Flex direction="column" mr={6}>
               <Text fontWeight={800} fontSize="16pt">
-                sdsd
+                {community.name}
               </Text>
               <Text fontWeight={600} fontSize="10pt" color="gray.400">
                 r/sdsd

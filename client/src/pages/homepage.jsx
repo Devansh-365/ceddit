@@ -46,7 +46,7 @@ const Feature = ({ title, text, icon }) => {
 export const Homepage = () => {
   return (
     <Layout>
-      <Container maxW={"3xl"} height={"auto"}>
+      <Container maxW={"4xl"} height={"auto"}>
         <Stack
           as={Box}
           textAlign={"center"}
@@ -58,15 +58,14 @@ export const Homepage = () => {
             fontSize={{ base: "4xl", sm: "4xl", md: "6xl" }}
             lineHeight={"110%"}
           >
-            Make money from <br />
+            Empowering Developers <br />
             <Text as={"span"} color={"blue.400"}>
-              your audience
+              with Collaborative Learning
             </Text>
           </Heading>
-          <Text color={"gray.500"}>
-            Monetize your content by charging your most loyal readers and reward
-            them loyalty points. Give back to your loyal readers by granting
-            them access to your pre-releases and sneak-peaks.
+          <Text color={"gray.500"} w={"600px"} mx={"auto"}>
+            A Dynamic Platform for Developers: Fostering Collaborative Learning
+            through Programming Question Posting and Knowledge Sharing{" "}
           </Text>
           <Stack
             direction={"column"}
@@ -80,6 +79,8 @@ export const Homepage = () => {
               bg={"blue.400"}
               rounded={"full"}
               px={6}
+              as={"a"}
+              href="/explore"
               _hover={{
                 bg: "blue.500",
               }}

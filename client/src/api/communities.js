@@ -17,4 +17,27 @@ const createCommunity = async (community, user) => {
   }
 };
 
-export { createCommunity };
+const getCommunities = async () => {
+  try {
+    const res = await fetch(BASE_URL + "api/communities");
+    return await res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getCommunityPosts = async (communityId) => {
+  try {
+    const res = await fetch(
+      BASE_URL + `api/communities/655b8c72ac02652a9e1ad4b0`
+    );
+    const data = await res.json();
+    console.log("DATA: ", data);
+
+    return data.posts;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { createCommunity, getCommunities, getCommunityPosts };

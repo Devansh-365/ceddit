@@ -88,9 +88,9 @@ const PostItem = () => {
         <Stack spacing={1} p="10px 10px">
           {true && (
             <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
-              {false && (
+              {true && (
                 <>
-                  {false ? (
+                  {true ? (
                     <Image
                       borderRadius="full"
                       boxSize="18px"
@@ -105,7 +105,7 @@ const PostItem = () => {
                       fontWeight={700}
                       _hover={{ textDecoration: "underline" }}
                       onClick={(event) => event.stopPropagation()}
-                    >{`r/`}</Text>
+                    >{`r/sdsds`}</Text>
                   </Link>
                   <Icon as={BsDot} color="gray.500" fontSize={8} />
                 </>

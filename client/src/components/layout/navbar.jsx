@@ -27,6 +27,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { GrAdd } from "react-icons/gr";
 import { isLoggedIn, logoutUser } from "../../utils/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -211,7 +212,7 @@ const DesktopNav = () => {
                       fontSize="10pt"
                     >
                       <Text fontWeight={600}>
-                        sdsd
+                        Home
                         {/* {directoryState.selectedMenuItem.displayText} */}
                       </Text>
                     </Box>
@@ -221,7 +222,38 @@ const DesktopNav = () => {
               </Flex>
             </MenuButton>
             <MenuList maxHeight="300px" overflow="scroll" overflowX="hidden">
-              {/* <Communities menuOpen={isOpen} /> */}
+              <Box mt={3} mb={4}>
+                <Text
+                  pl={3}
+                  mb={1}
+                  fontSize="7pt"
+                  fontWeight={500}
+                  color="gray.500"
+                >
+                  MY COMMUNITIES
+                </Text>
+                <MenuItem
+                  width="100%"
+                  fontSize="10pt"
+                  _hover={{ bg: "gray.100" }}
+                  // onClick={() => setOpen(true)}
+                >
+                  <Flex alignItems="center">
+                    <Icon fontSize={20} mr={2} as={GrAdd} />
+                    Create Community
+                  </Flex>
+                </MenuItem>
+                {/* {mySnippets.map((snippet) => (
+                  <MenuListItem
+                    key={snippet.communityId}
+                    icon={FaReddit}
+                    displayText={`r/${snippet.communityId}`}
+                    link={`/r/${snippet.communityId}`}
+                    iconColor="blue.500"
+                    imageURL={snippet.imageURL}
+                  />
+                ))} */}
+              </Box>
             </MenuList>
           </>
         )}

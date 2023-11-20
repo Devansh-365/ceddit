@@ -1,7 +1,29 @@
-import { Flex, Skeleton, SkeletonCircle, Stack } from "@chakra-ui/react";
-import React from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Image,
+  Skeleton,
+  SkeletonCircle,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { getCommunities } from "../../api/communities";
+import { Link } from "react-router-dom";
+import { FaConnectdevelop } from "react-icons/fa";
 
 export const TopCommunities = () => {
+  const [communities, setCommunities] = useState([]);
+
+  useEffect(() => {
+    getCommunities().then((data) => {
+      console.log("COMMUNITIES : ", data.communities);
+      setCommunities(data.communities);
+    });
+  }, []);
+
   return (
     <Flex
       direction="column"
@@ -19,6 +41,7 @@ export const TopCommunities = () => {
         height="70px"
         borderRadius="4px 4px 0px 0px"
         fontWeight={600}
+        cursor={"pointer"}
         bgImage="url(/images/recCommsArt.png)"
         backgroundSize="cover"
         bgGradient="linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)),
@@ -27,7 +50,7 @@ export const TopCommunities = () => {
         Top Communities
       </Flex>
       <Flex direction="column">
-        {true ? (
+        {!communities ? (
           <Stack mt={2} p={3}>
             <Flex justify="space-between" align="center">
               <SkeletonCircle size="10" />
@@ -43,7 +66,66 @@ export const TopCommunities = () => {
             </Flex>
           </Stack>
         ) : (
-          <></>
+          <>
+            {communities.map((item, index) => {
+              return (
+                <Link key={item._id} to={`/community/${item._id}`}>
+                  <Flex
+                    position="relative"
+                    align="center"
+                    fontSize="10pt"
+                    borderBottom="1px solid"
+                    borderColor="gray.200"
+                    p="10px 12px"
+                    fontWeight={600}
+                  >
+                    <Flex width="80%" align="center">
+                      <Flex width="15%">
+                        <Text mr={2}>{index + 1}</Text>
+                      </Flex>
+                      <Flex align="center" width="80%">
+                        {false ? (
+                          <Image
+                            borderRadius="full"
+                            boxSize="28px"
+                            src={item.imageURL}
+                            mr={2}
+                          />
+                        ) : (
+                          <Icon
+                            as={FaConnectdevelop}
+                            fontSize={30}
+                            color="brand.100"
+                            mr={2}
+                          />
+                        )}
+                        <span
+                          style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >{`${item.name}`}</span>
+                      </Flex>
+                    </Flex>
+                    <Box position="absolute" right="10px">
+                      <Button
+                        height="22px"
+                        fontSize="8pt"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          // onJoinLeaveCommunity(item, isJoined);
+                        }}
+                        variant={true ? "outline" : "solid"}
+                      >
+                        {true ? "Joined" : "Join"}
+                      </Button>
+                    </Box>
+                  </Flex>
+                </Link>
+              );
+            })}
+          </>
         )}
       </Flex>
     </Flex>

@@ -5,12 +5,10 @@ const PostSchema = new mongoose.Schema(
     user: {
       type: mongoose.Types.ObjectId,
       ref: "user",
-      required: true,
     },
     community: {
       type: mongoose.Types.ObjectId,
       ref: "community",
-      required: true,
     },
     title: {
       type: String,
@@ -22,10 +20,18 @@ const PostSchema = new mongoose.Schema(
       required: true,
       maxLength: [8000, "Must be no more than 8000 characters"],
     },
-    likeCount: {
-      type: Number,
-      default: 0,
-    },
+    upvotedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    downvotedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
     commentCount: {
       type: Number,
       default: 0,

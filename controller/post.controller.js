@@ -13,6 +13,7 @@ const createPost = async (req, res) => {
       content,
       user: userId,
       community: communityId,
+      upvotedBy: [userId],
     });
 
     res.json(post);

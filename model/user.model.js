@@ -16,6 +16,18 @@ const UserSchema = new mongoose.Schema(
       minLength: [8, "Must be at least 8 characters long"],
     },
     image: { type: String },
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "post",
+      },
+    ],
+    subscribedSubs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "community",
+      },
+    ],
     isAdmin: {
       type: Boolean,
       default: false,
@@ -25,4 +37,5 @@ const UserSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 module.exports = mongoose.model("user", UserSchema);

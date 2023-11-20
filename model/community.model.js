@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const CommunitySchema = new mongoose.Schema(
   {
+    admin: {
+      type: mongoose.Types.ObjectId,
+      ref: "user",
+    },
     name: {
       type: String,
       required: true,
@@ -14,18 +18,26 @@ const CommunitySchema = new mongoose.Schema(
       default: "",
       maxLength: [250, "Must be at most 250 characters long"],
     },
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "post",
+      },
+    ],
+    subscribedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    subscriberCount: {
+      type: Number,
+      default: 1,
+    },
   },
   {
     timestamps: true,
   }
 );
-
-CommunitySchema.virtual("posts", {
-  ref: "post",
-  localField: "_id",
-  foreignField: "community",
-  justOne: false,
-  options: { sort: { createdAt: -1 } },
-});
 
 module.exports = mongoose.model("community", CommunitySchema);

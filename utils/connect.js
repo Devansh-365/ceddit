@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const config = require("dotenv").config();
 
 async function connect() {
-  const dbUri = process.env.dbUri;
+  const dbUri = process.env.dbUri || "mongodb://mongo:27017";
 
   try {
     await mongoose.connect(dbUri);

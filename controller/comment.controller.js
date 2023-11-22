@@ -24,14 +24,11 @@ const writeCommentForPost = async (req, res) => {
       content,
     });
 
-    // Save the new comment to the database
     await newComment.save();
 
-    // Add the comment to the post
     post.comments.push(newComment);
     post.commentCount += 1;
 
-    // Save the updated post
     await post.save();
 
     res.status(201).json({ message: 'Comment added successfully', comment: newComment });
@@ -64,7 +61,8 @@ const addReply = async (req, res) => {
       post.comments = [];
     }
 
-    post.comments.push(comment._id);
+    post.comments.push(comment);
+    post.commentCount += 1;
 
     await post.save();
 

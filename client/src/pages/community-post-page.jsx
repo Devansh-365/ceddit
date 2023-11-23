@@ -38,7 +38,7 @@ export const CommunityPostPage = () => {
       <SecondaryLayout>
         <>
           {post ? <PostItem post={post} /> : null}
-          <Comments user={user.user} />
+          <Comments user={user?.user} />
         </>
         <>
           <SidePostCommunity />

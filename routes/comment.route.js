@@ -5,9 +5,8 @@ const comment = require("../controller/comment.controller");
 
 router.post('/:postId',verifyToken,comment.writeCommentForPost)
 router.post('/:postId/reply/:id',verifyToken,comment.addReply)
-// router.get('/:id',comment.getCommentWithReplies)
 router.put('/:postId/:id',verifyToken,comment.updateCommentForPost)
-router.put('/:postId/:id',verifyToken,comment.deleteCommentForPost)
+router.delete('/:postId/:id',verifyToken,comment.deleteCommentForPost)
 
 
 module.exports = router;

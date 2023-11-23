@@ -120,30 +120,25 @@ const deleteCommentForPost = async (req, res) => {
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({ message: "Post not found" });
     }
-
-    const commentIndex = post.comments.findIndex((c) => c._id.toString() === commentId);
-
-    if (commentIndex === -1) {
-      return res.status(404).json({ message: 'Comment not found' });
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found"})
     }
-
-    const comment = post.comments[commentIndex];
 
     if (comment.commentedBy.toString() !== userId && !isAdmin) {
-      return res.status(401).json({ message: 'Access is denied.' });
+      return res.status(401).json({ message: "Access is denied." });
     }
-
-    post.comments.splice(commentIndex, 1);
+    await Comment.deleteOne({ _id: commentId });
     post.commentCount -= 1;
 
     await post.save();
 
-    res.status(204).end();
+    res.status(200).json({message:"Comment deleted successfully", comment});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error', error });
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 

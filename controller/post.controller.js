@@ -1,4 +1,5 @@
 const Post = require("../model/post.model");
+const Community= require("../model/community.model");
 
 const createPost = async (req, res) => {
   try {
@@ -8,7 +9,12 @@ const createPost = async (req, res) => {
     if (!(title && content)) {
       throw new Error("All input required");
     }
+    const community = await Community.findById(communityId);
 
+    if (!community) {
+      return res.status(404).json({ message: "community not found" });
+    }
+    
     const post = await Post.create({
       title,
       content,
@@ -17,6 +23,8 @@ const createPost = async (req, res) => {
       upvotedBy: [userId],
     });
 
+    community.posts.push(post);
+    await community.save();
     res.json(post);
   } catch (err) {
     return res.status(400).json({ error: err.message });
@@ -121,11 +129,76 @@ const searchPosts=async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error',error: error.message });
   }
 }
+const upvotePost = async (req, res) => {
+  const postId = req.params.postId;
+  const userId = req.user.userId;
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const hasUpvoted = post.upvotedBy.includes(userId);
+
+    if (hasUpvoted) {
+      
+      post.upvotedBy = post.upvotedBy.filter((id) => id.toString() !== userId);
+      await post.save();
+      return res.status(200).json({ message: "Successfully removed upvote from the post" });
+    }
+
+    post.upvotedBy.push(userId);
+    await post.save();
+
+    return res.status(200).json({ message: "Successfully upvoted the post" });
+  } catch (error) {
+    console.error(`Error upvoting post: ${error.message}`);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const downvotePost = async (req, res) => {
+  const postId = req.params.postId;
+  const userId = req.user.userId;
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const hasUpvoted = post.upvotedBy.includes(userId);
+    const hasDownvoted = post.downvotedBy.includes(userId);
+
+    if (hasUpvoted) {
+      post.upvotedBy = post.upvotedBy.filter((id) => id.toString() !== userId);
+    }
+
+    if (hasDownvoted) {
+      post.downvotedBy = post.downvotedBy.filter((id) => id.toString() !== userId);
+    } else {
+      post.downvotedBy.push(userId);
+    }
+
+    await post.save();
+
+    return res.status(200).json({ message: "Successfully downvoted the post" });
+  } catch (error) {
+    console.error(`Error downvoting post: ${error.message}`);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createPost,
   getPosts,
   getPostById,
   deletePost,
   updatePost,
-  searchPosts
+  searchPosts,
+  upvotePost,
+  downvotePost
 };

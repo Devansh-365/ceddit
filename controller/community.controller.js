@@ -37,7 +37,7 @@ const getCommunityPosts = async (req, res) => {
   const communityId = req.params.id;
 
   try {
-    const community = await Community.findById(communityId);
+    const community = await Community.findById(communityId).populate("posts");
 
     if (!community) {
       return res.status(404).json({ error: "Community not found" });

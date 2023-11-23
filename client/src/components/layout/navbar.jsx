@@ -109,7 +109,9 @@ export default function Navbar() {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem>Profile</MenuItem>
+                <MenuItem as={"a"} href={`/users/${user.userId}`}>
+                  Profile
+                </MenuItem>
                 <MenuItem>Explore</MenuItem>
                 <MenuDivider />
                 <MenuItem

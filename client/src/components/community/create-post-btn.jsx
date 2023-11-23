@@ -90,8 +90,9 @@ export const CreatePostBtn = () => {
               Sort By
             </MenuButton>
             <MenuList>
-              <MenuItem fontSize="10pt">Download</MenuItem>
-              <MenuItem fontSize="10pt">Create a Copy</MenuItem>
+              <MenuItem fontSize="10pt">Latest</MenuItem>
+              <MenuItem fontSize="10pt">Likes</MenuItem>
+              <MenuItem fontSize="10pt">Comment</MenuItem>
             </MenuList>
           </>
         )}

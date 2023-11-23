@@ -10,22 +10,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { getCommunities, onJoinLeaveCommunity } from "../../api/communities";
+import { getCommunities } from "../../api/communities";
 import { Link } from "react-router-dom";
 import { FaConnectdevelop } from "react-icons/fa";
-import { isLoggedIn } from "../../utils/auth";
 
-export const TopCommunities = () => {
-  const user = isLoggedIn();
+export const SidePostCommunity = () => {
   const [communities, setCommunities] = useState([]);
-
-  const isUserJoinCommunity = (community) => {
-    if (!user) return false;
-    if (community.subscribedBy.includes(user.userId)) return true;
-  };
 
   useEffect(() => {
     getCommunities().then((data) => {
+      console.log("COMMUNITIES : ", data.communities);
       setCommunities(data.communities);
     });
   }, []);
@@ -53,10 +47,36 @@ export const TopCommunities = () => {
         bgGradient="linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)),
         url('images/recCommsArt.png')"
       >
-        Top Communities
+        Home
       </Flex>
       <Flex direction="column">
-        {!communities ? (
+        <Stack mt={2} p={3}>
+          <Button
+            colorScheme={"green"}
+            bg={"blue.600"}
+            rounded={"full"}
+            px={6}
+            _hover={{
+              bg: "blue.700",
+            }}
+            fontSize={"10pt"}
+          >
+            Create Post
+          </Button>
+          <Button
+            colorScheme={"green"}
+            bg={"blue.600"}
+            rounded={"full"}
+            px={6}
+            _hover={{
+              bg: "blue.700",
+            }}
+            fontSize={"10pt"}
+          >
+            Create Community
+          </Button>
+        </Stack>
+        {/* {!communities ? (
           <Stack mt={2} p={3}>
             <Flex justify="space-between" align="center">
               <SkeletonCircle size="10" />
@@ -120,11 +140,11 @@ export const TopCommunities = () => {
                         fontSize="8pt"
                         onClick={(event) => {
                           event.stopPropagation();
-                          onJoinLeaveCommunity(item._id, user);
+                          // onJoinLeaveCommunity(item, isJoined);
                         }}
                         variant={true ? "outline" : "solid"}
                       >
-                        {isUserJoinCommunity(item) ? "Joined" : "Join"}
+                        {true ? "Joined" : "Join"}
                       </Button>
                     </Box>
                   </Flex>
@@ -132,7 +152,7 @@ export const TopCommunities = () => {
               );
             })}
           </>
-        )}
+        )} */}
       </Flex>
     </Flex>
   );

@@ -17,4 +17,13 @@ const createPost = async (post, user) => {
   }
 };
 
-export { createPost };
+const getPosts = async () => {
+  try {
+    const res = await fetch(BASE_URL + "api/posts");
+    return await res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { createPost, getPosts };

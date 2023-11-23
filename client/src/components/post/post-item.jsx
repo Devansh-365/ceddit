@@ -8,9 +8,9 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { BsChat, BsDot } from "react-icons/bs";
-import { FaReddit } from "react-icons/fa";
+import { FaConnectdevelop, FaReddit } from "react-icons/fa";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
@@ -21,7 +21,7 @@ import {
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-const PostItem = () => {
+const PostItem = ({ post }) => {
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const singlePostView = false; // function not passed to [pid]
@@ -74,7 +74,7 @@ const PostItem = () => {
           //   onClick={(event) => onVote(event, post, 1, post.communityId)}
         />
         <Text fontSize="9pt" fontWeight={600}>
-          {/* {post.voteStatus} */}
+          {post ? post?.upvotedBy?.length : 0}
         </Text>
         <Icon
           as={1 === -1 ? IoArrowDownCircleSharp : IoArrowDownCircleOutline}
@@ -90,7 +90,7 @@ const PostItem = () => {
             <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
               {true && (
                 <>
-                  {true ? (
+                  {false ? (
                     <Image
                       borderRadius="full"
                       boxSize="18px"
@@ -98,28 +98,35 @@ const PostItem = () => {
                       mr={2}
                     />
                   ) : (
-                    <Icon as={FaReddit} fontSize={18} mr={1} color="blue.500" />
+                    <Icon
+                      as={FaConnectdevelop}
+                      fontSize={18}
+                      mr={1}
+                      color="blue.500"
+                    />
                   )}
                   <Link href={`r/`}>
                     <Text
                       fontWeight={700}
                       _hover={{ textDecoration: "underline" }}
                       onClick={(event) => event.stopPropagation()}
-                    >{`r/sdsds`}</Text>
+                    >
+                      {post.community.name}
+                    </Text>
                   </Link>
                   <Icon as={BsDot} color="gray.500" fontSize={8} />
                 </>
               )}
               <Text color="gray.500">
-                Posted by u/sdsd
+                Posted by {post.user.username}
                 {/* {moment(new Date(post.createdAt.seconds * 1000)).fromNow()} */}
               </Text>
             </Stack>
           )}
           <Text fontSize="12pt" fontWeight={600}>
-            sdsdsd
+            {post.title}
           </Text>
-          <Text fontSize="10pt">Hello</Text>
+          <Text fontSize="10pt">{post.content}</Text>
           {/* {post.imageURL && (
             <Flex justify="center" align="center" p={2}>
               {loadingImage && (
@@ -146,9 +153,9 @@ const PostItem = () => {
             cursor="pointer"
           >
             <Icon as={BsChat} mr={2} />
-            <Text fontSize="9pt">1221</Text>
+            <Text fontSize="9pt">{post?.commentCount}</Text>
           </Flex>
-          <Flex
+          {/* <Flex
             align="center"
             p="8px 10px"
             borderRadius={4}
@@ -167,8 +174,27 @@ const PostItem = () => {
           >
             <Icon as={IoBookmarkOutline} mr={2} />
             <Text fontSize="9pt">Save</Text>
-          </Flex>
-          {true && (
+          </Flex> */}
+          {post?.user.isAdmin && (
+            <Flex
+              align="center"
+              p="8px 10px"
+              borderRadius={4}
+              _hover={{ bg: "gray.200" }}
+              cursor="pointer"
+              onClick={handleDelete}
+            >
+              {false ? (
+                <Spinner size="sm" />
+              ) : (
+                <>
+                  <Icon as={AiOutlineEdit} mr={2} />
+                  <Text fontSize="9pt">Edit</Text>
+                </>
+              )}
+            </Flex>
+          )}
+          {post?.user.isAdmin && (
             <Flex
               align="center"
               p="8px 10px"

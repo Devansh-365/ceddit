@@ -28,11 +28,8 @@ const getCommunities = async () => {
 
 const getCommunityPosts = async (communityId) => {
   try {
-    const res = await fetch(
-      BASE_URL + `api/communities/655b8c72ac02652a9e1ad4b0`
-    );
+    const res = await fetch(BASE_URL + `api/communities/${communityId}`);
     const data = await res.json();
-    console.log("DATA: ", data);
 
     return data.posts;
   } catch (err) {
@@ -40,4 +37,31 @@ const getCommunityPosts = async (communityId) => {
   }
 };
 
-export { createCommunity, getCommunities, getCommunityPosts };
+const onJoinLeaveCommunity = async (communityId, user) => {
+  try {
+    const res = await fetch(
+      BASE_URL + `api/communities/${communityId}/subscribe`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": user.token,
+        },
+      }
+    );
+    const data = await res.json();
+    console.log("Data: ", data);
+
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export {
+  createCommunity,
+  getCommunities,
+  getCommunityPosts,
+  onJoinLeaveCommunity,
+};

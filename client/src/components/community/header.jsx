@@ -1,9 +1,19 @@
 import React from "react";
 import { Box, Button, Flex, Icon, Text, Image } from "@chakra-ui/react";
 import { FaReddit } from "react-icons/fa";
+import { isLoggedIn } from "../../utils/auth";
+import { onJoinLeaveCommunity } from "../../api/communities";
 
 const Header = ({ community }) => {
   console.log("COMMUNITY : ", community);
+  const user = isLoggedIn();
+
+  const isUserJoinCommunity = () => {
+    if (!user) {
+      return false;
+    }
+    if (community?.subscribedBy?.includes(user?.userId)) return true;
+  };
   /**
    * !!!Don't pass communityData boolean until the end
    * It's a small optimization!!!
@@ -57,10 +67,10 @@ const Header = ({ community }) => {
                 height="30px"
                 pr={6}
                 pl={6}
-                // onClick={() => onJoinLeaveCommunity(communityData, isJoined)}
+                onClick={() => onJoinLeaveCommunity(community._id, user)}
                 // isLoading={loading}
               >
-                {true ? "Joined" : "Join"}
+                {community && isUserJoinCommunity() ? "Joined" : "Join"}
               </Button>
             </Flex>
           </Flex>

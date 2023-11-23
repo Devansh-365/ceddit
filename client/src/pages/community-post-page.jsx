@@ -15,7 +15,7 @@ import { isLoggedIn } from "../utils/auth";
 export const CommunityPostPage = () => {
   let params = useParams();
   const [post, setPost] = useState([]);
-  const user = isLoggedIn();
+  const user = isLoggedIn() || undefined;
 
   function toTitleCase(str = "") {
     return str
@@ -30,8 +30,6 @@ export const CommunityPostPage = () => {
       setPost(data);
     });
   }, []);
-
-  console.log("POST : ", post);
 
   usePageMeta(`Ceddit | ${toTitleCase(post?.title)}`);
 

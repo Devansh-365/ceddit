@@ -13,8 +13,11 @@ import React from "react";
 import { BsLink45Deg } from "react-icons/bs";
 import { FaReddit } from "react-icons/fa";
 import { IoImageOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 export const CreatePostBtn = () => {
+  const navigate = useNavigate();
+
   return (
     <Flex
       justify="space-evenly"
@@ -48,7 +51,7 @@ export const CreatePostBtn = () => {
         height="36px"
         borderRadius={4}
         mr={4}
-        // onClick={onClick}
+        onClick={() => navigate("/submit")}
       />
       {/* <Icon
         as={IoImageOutline}

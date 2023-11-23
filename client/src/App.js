@@ -6,6 +6,7 @@ import { CommunityPage } from "./pages/community-page";
 import { ExplorePage } from "./pages/explore-page";
 import ProtectedRoute from "./components/protected-route";
 import { CommunityPostPage } from "./pages/community-post-page";
+import { CreatePostPage } from "./pages/create-post-page";
 
 function App() {
   return (
@@ -26,6 +27,14 @@ function App() {
         />
 
         <Route path="/explore" element={<ExplorePage />} />
+        <Route
+          path="/submit"
+          element={
+            <ProtectedRoute>
+              <CreatePostPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/community/:communityId" element={<CommunityPage />} />
         <Route

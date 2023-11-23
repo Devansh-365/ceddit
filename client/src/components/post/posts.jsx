@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PostLoading } from "./post-loading";
 import { Stack } from "@chakra-ui/react";
 import PostItem from "./post-item";
+import { getPosts } from "../../api/posts";
 
 export const Posts = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    getPosts().then((data) => {
+      setPosts(data);
+    });
+  }, []);
+
   return (
     <>
-      {false ? (
+      {posts.length === 0 ? (
         <PostLoading />
       ) : (
         <Stack>
-          {[0, 1, 2, 3].map((i) => (
-            <PostItem key={i} />
+          {posts.map((item, i) => (
+            <PostItem post={item} key={i} />
           ))}
         </Stack>
       )}

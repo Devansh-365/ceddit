@@ -8,6 +8,8 @@ import { Posts } from "../components/post/posts";
 import usePageMeta from "../utils/meta";
 import { useParams } from "react-router-dom";
 import { getCommunityPosts } from "../api/communities";
+import { Stack } from "@chakra-ui/react";
+import PostItem from "../components/post/post-item";
 
 export const CommunityPage = () => {
   let params = useParams();
@@ -15,10 +17,12 @@ export const CommunityPage = () => {
 
   useEffect(() => {
     getCommunityPosts(params.communityId).then((item) => {
-      console.log("POSTS : ", item);
       setPosts(item);
     });
-  }, [params.communityId, posts, setPosts]);
+  }, [params.communityId]);
+
+  console.log("POSTS : ", posts);
+
   usePageMeta(`Ceddit | ${params.communityId}`);
 
   return (
@@ -27,7 +31,12 @@ export const CommunityPage = () => {
       <SecondaryLayout>
         <>
           <CreatePostBtn />
-          <Posts />
+          <Stack>
+            {posts.posts?.map((item, i) => {
+              console.log("firstsdsdsds : ", i,  item);
+              return <PostItem post={item} key={i} />;
+            })}
+          </Stack>
         </>
         <>
           <About />

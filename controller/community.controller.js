@@ -37,15 +37,14 @@ const getCommunityPosts = async (req, res) => {
   const communityId = req.params.id;
 
   try {
-    const community = await Community.findById(communityId);
+    const community = await Community.findById(communityId).populate('posts');
 
     if (!community) {
       return res.status(404).json({ error: "Community not found" });
     }
 
-    const posts = community;
-
-    return res.json({ posts });
+    return res.json({ community });
+  
   } catch (error) {
     console.error(`Error getting community posts: ${error.message}`);
     return res.status(500).json({ error: "Internal Server Error" });

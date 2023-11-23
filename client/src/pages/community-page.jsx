@@ -15,15 +15,21 @@ export const CommunityPage = () => {
   let params = useParams();
   const [posts, setPosts] = useState([]);
 
+  function toTitleCase(str = "") {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
   useEffect(() => {
     getCommunityPosts(params.communityId).then((item) => {
       setPosts(item);
     });
   }, [params.communityId]);
 
-  console.log("POSTS : ", posts);
-
-  usePageMeta(`Ceddit | ${params.communityId}`);
+  usePageMeta(`Ceddit | ${toTitleCase(posts?.name)}`);
 
   return (
     <Layout>
@@ -32,10 +38,10 @@ export const CommunityPage = () => {
         <>
           <CreatePostBtn />
           <Stack>
-            {posts.posts?.map((item, i) => {
-              console.log("firstsdsdsds : ", i,  item);
-              return <PostItem post={item} key={i} />;
-            })}
+            {posts &&
+              posts?.posts?.map((item, i) => {
+                return <PostItem post={item} key={i} />;
+              })}
           </Stack>
         </>
         <>

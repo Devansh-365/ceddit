@@ -19,12 +19,26 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from "react-icons/io5";
+import { FiArrowUpRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { isLoggedIn } from "../../utils/auth";
+import { downvotePost, upvotePost } from "../../api/posts";
 
 const PostItem = ({ post }) => {
+  const user = isLoggedIn();
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const singlePostView = false; // function not passed to [pid]
+
+  const isUserUpvote = (community) => {
+    if (!user) return false;
+    if (post?.upvotedBy?.includes(user.userId)) return true;
+  };
+
+  const isUserDownvote = (community) => {
+    if (!user) return false;
+    if (post?.downvotedBy?.includes(user.userId)) return true;
+  };
 
   const handleDelete = async (event) => {
     event.stopPropagation();
@@ -54,7 +68,6 @@ const PostItem = ({ post }) => {
       bg="white"
       borderColor={singlePostView ? "white" : "gray.300"}
       borderRadius={singlePostView ? "4px 4px 0px 0px" : 4}
-      cursor={singlePostView ? "unset" : "pointer"}
       _hover={{ borderColor: singlePostView ? "none" : "gray.500" }}
       //   onClick={() => onSelectPost && post && onSelectPost(post, postIdx!)}
     >
@@ -67,66 +80,88 @@ const PostItem = ({ post }) => {
         borderRadius={singlePostView ? "0" : "3px 0px 0px 3px"}
       >
         <Icon
-          as={1 === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
-          color={1 === 1 ? "brand.100" : "gray.400"}
+          as={isUserUpvote() ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
+          color={isUserUpvote() ? "brand.100" : "gray.400"}
           fontSize={22}
           cursor="pointer"
-          //   onClick={(event) => onVote(event, post, 1, post.communityId)}
+          onClick={() => upvotePost(post._id, user)}
         />
         <Text fontSize="9pt" fontWeight={600}>
           {post ? post?.upvotedBy?.length : 0}
         </Text>
         <Icon
-          as={1 === -1 ? IoArrowDownCircleSharp : IoArrowDownCircleOutline}
-          color={1 === -1 ? "#4379FF" : "gray.400"}
+          as={
+            isUserDownvote() ? IoArrowDownCircleSharp : IoArrowDownCircleOutline
+          }
+          color={isUserDownvote() ? "#4379FF" : "gray.400"}
           fontSize={22}
           cursor="pointer"
-          //   onClick={(event) => onVote(event, post, -1, post.communityId)}
+          onClick={() => downvotePost(post._id, user)}
         />
       </Flex>
       <Flex direction="column" width="100%">
         <Stack spacing={1} p="10px 10px">
           {true && (
-            <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
-              {true && (
-                <>
-                  {false ? (
-                    <Image
-                      borderRadius="full"
-                      boxSize="18px"
-                      //   src={post.communityImageURL}
-                      mr={2}
-                    />
-                  ) : (
-                    <Icon
-                      as={FaConnectdevelop}
-                      fontSize={18}
-                      mr={1}
-                      color="blue.500"
-                    />
-                  )}
-                  <Link href={`r/`}>
-                    <Text
-                      fontWeight={700}
-                      _hover={{ textDecoration: "underline" }}
-                      onClick={(event) => event.stopPropagation()}
-                    >
-                      {post.community.name}
-                    </Text>
-                  </Link>
-                  <Icon as={BsDot} color="gray.500" fontSize={8} />
-                </>
-              )}
-              <Text color="gray.500">
-                Posted by {post.user.username}
-                {/* {moment(new Date(post.createdAt.seconds * 1000)).fromNow()} */}
-              </Text>
+            <Stack
+              direction="row"
+              spacing={0.6}
+              align="center"
+              justify={"space-between"}
+              fontSize="9pt"
+            >
+              <Stack direction="row" align="center">
+                {true && (
+                  <>
+                    {false ? (
+                      <Image
+                        borderRadius="full"
+                        boxSize="18px"
+                        //   src={post.communityImageURL}
+                        mr={2}
+                      />
+                    ) : (
+                      <Icon
+                        as={FaConnectdevelop}
+                        fontSize={18}
+                        mr={1}
+                        color="blue.500"
+                      />
+                    )}
+                    <Link to={`/community/${post?.community?._id}`}>
+                      <Text
+                        fontWeight={700}
+                        _hover={{ textDecoration: "underline" }}
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        {post?.community?.name}
+                      </Text>
+                    </Link>
+                    <Icon as={BsDot} color="gray.500" fontSize={8} />
+                  </>
+                )}
+                <Text color="gray.500">
+                  Posted by {post?.user?.username}
+                  {/* {moment(new Date(post.createdAt.seconds * 1000)).fromNow()} */}
+                </Text>
+              </Stack>
+              <Link to={`/community/${post?.community?._id}/${post?._id}`}>
+                <Flex
+                  direction="column"
+                  align="center"
+                  bg={"blue.600"}
+                  p={2}
+                  width="32px"
+                  borderRadius={"full"}
+                >
+                  <Icon as={FiArrowUpRight} fontSize={16} color="white" />
+                </Flex>
+              </Link>
             </Stack>
           )}
           <Text fontSize="12pt" fontWeight={600}>
             {post.title}
           </Text>
-          <Text fontSize="10pt">{post.content}</Text>
+          <Text fontSize="10pt">{post?.content}</Text>
           {/* {post.imageURL && (
             <Flex justify="center" align="center" p={2}>
               {loadingImage && (
@@ -175,7 +210,7 @@ const PostItem = ({ post }) => {
             <Icon as={IoBookmarkOutline} mr={2} />
             <Text fontSize="9pt">Save</Text>
           </Flex> */}
-          {post?.user.isAdmin && (
+          {post?.user?.isAdmin && (
             <Flex
               align="center"
               p="8px 10px"
@@ -194,7 +229,7 @@ const PostItem = ({ post }) => {
               )}
             </Flex>
           )}
-          {post?.user.isAdmin && (
+          {post?.user?.isAdmin && (
             <Flex
               align="center"
               p="8px 10px"

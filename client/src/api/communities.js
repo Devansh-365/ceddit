@@ -30,8 +30,7 @@ const getCommunityPosts = async (communityId) => {
   try {
     const res = await fetch(BASE_URL + `api/communities/${communityId}`);
     const data = await res.json();
-
-    return data.posts;
+    return data.community;
   } catch (err) {
     console.log(err);
   }

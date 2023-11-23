@@ -12,8 +12,10 @@ import {
   Image,
   Spinner,
 } from "@chakra-ui/react";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { FaReddit } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { RiCakeLine } from "react-icons/ri";
 
 const About = () => {
   //   const [user] = useAuthState(auth); // will revisit how 'auth' state is passed
@@ -85,7 +87,7 @@ const About = () => {
         <Icon as={HiOutlineDotsHorizontal} cursor="pointer" />
       </Flex>
       <Flex direction="column" p={3} bg="white" borderRadius="0px 0px 4px 4px">
-        <Box
+        {/* <Box
           bg="gray.100"
           width="100%"
           p={2}
@@ -97,8 +99,8 @@ const About = () => {
           <Text fontSize="9pt" fontWeight={700} color="blue.500">
             Add description
           </Text>
-        </Box>
-        {/* {loading ? (
+        </Box> */}
+        {false ? (
           <Stack mt={2}>
             <SkeletonCircle size="10" />
             <Skeleton height="10px" />
@@ -108,7 +110,7 @@ const About = () => {
           </Stack>
         ) : (
           <>
-            {user?.uid === communityData?.creatorId && (
+            {true && (
               <Box
                 bg="gray.100"
                 width="100%"
@@ -127,7 +129,8 @@ const About = () => {
               <Flex width="100%" p={2} fontWeight={600} fontSize="10pt">
                 <Flex direction="column" flexGrow={1}>
                   <Text>
-                    {communityData?.numberOfMembers?.toLocaleString()}
+                    2
+                    {/* {communityData?.numberOfMembers?.toLocaleString()} */}
                   </Text>
                   <Text>Members</Text>
                 </Flex>
@@ -145,24 +148,23 @@ const About = () => {
                 fontSize="10pt"
               >
                 <Icon as={RiCakeLine} mr={2} fontSize={18} />
-                {communityData?.createdAt && (
+                {/* {communityData?.createdAt && (
                   <Text>
                     Created{" "}
                     {moment(
                       new Date(communityData.createdAt!.seconds * 1000)
                     ).format("MMM DD, YYYY")}
                   </Text>
-                )}
+                )} */}
               </Flex>
-              {!onCreatePage && (
-                <Link href={`/r/${router.query.community}/submit`}>
+              {true && (
+                <Link to={`/r//submit`}>
                   <Button mt={3} height="30px">
                     Create Post
                   </Button>
                 </Link>
               )}
-              {/* !!!ADDED AT THE VERY END!!! INITIALLY DOES NOT EXIST */}
-        {/* {user?.uid === communityData?.creatorId && (
+              {/* {user?.uid === communityData?.creatorId && (
                 <>
                   <Divider />
                   <Stack fontSize="10pt" spacing={1}>
@@ -211,9 +213,9 @@ const About = () => {
                   </Stack>
                 </>
               )} */}
-        {/* </Stack>
+            </Stack>
           </>
-        )} */}
+        )}
       </Flex>
     </Box>
   );

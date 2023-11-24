@@ -3,10 +3,11 @@ import { Box, Button, Flex, Icon, Text, Image } from "@chakra-ui/react";
 import { FaReddit } from "react-icons/fa";
 import { isLoggedIn } from "../../utils/auth";
 import { onJoinLeaveCommunity } from "../../api/communities";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ community }) => {
-  console.log("COMMUNITY : ", community);
   const user = isLoggedIn();
+  const navigate = useNavigate();
 
   const isUserJoinCommunity = () => {
     if (!user) {
@@ -67,8 +68,10 @@ const Header = ({ community }) => {
                 height="30px"
                 pr={6}
                 pl={6}
-                onClick={() => onJoinLeaveCommunity(community._id, user)}
-                // isLoading={loading}
+                onClick={() => {
+                  onJoinLeaveCommunity(community._id, user);
+                  navigate(0);
+                }}
               >
                 {community && isUserJoinCommunity() ? "Joined" : "Join"}
               </Button>

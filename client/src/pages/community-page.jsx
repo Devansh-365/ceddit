@@ -29,6 +29,8 @@ export const CommunityPage = () => {
     });
   }, [params.communityId]);
 
+  console.log("Posts", posts);
+
   usePageMeta(`Ceddit | ${toTitleCase(posts?.name)}`);
 
   return (
@@ -45,7 +47,7 @@ export const CommunityPage = () => {
           </Stack>
         </>
         <>
-          <About />
+          <About community={posts} />
         </>
       </SecondaryLayout>
     </Layout>

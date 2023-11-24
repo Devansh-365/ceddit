@@ -1,7 +1,12 @@
 import { BASE_URL } from "../config";
+import { isLoggedIn } from "../utils/auth";
 
-const createCommunity = async (community, user) => {
+const createCommunity = async (community) => {
   try {
+    const user = isLoggedIn();
+    if (!user) {
+      return new Error("User not logged in");
+    }
     const res = await fetch(BASE_URL + "api/communities", {
       method: "POST",
       headers: {

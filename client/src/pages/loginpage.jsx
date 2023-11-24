@@ -6,6 +6,7 @@ import { login } from "../api/users";
 import { useNavigate } from "react-router-dom";
 import usePageMeta from "../utils/meta";
 import { loginUser } from "../utils/auth";
+import toast from "react-hot-toast";
 
 export const LoginPage = () => {
   usePageMeta("Ceddit | Login");
@@ -26,9 +27,11 @@ export const LoginPage = () => {
 
     const data = await login(form);
     if (data.error) {
+      toast.error("Something went wrong!");
       setFormError(data.error);
     } else {
       loginUser(data);
+      toast.success("Logged in successfully!");
       navigate("/");
     }
   };

@@ -16,7 +16,7 @@ const CommentInput = ({
           <Text mb={1}>
             Comment as{" "}
             <span style={{ color: "#3182CE" }}>
-              {user?.email?.split("@")[0]}
+              {user?.username || user?.email?.split("@")[0]}
             </span>
           </Text>
           <Textarea

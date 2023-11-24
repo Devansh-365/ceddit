@@ -16,60 +16,10 @@ import { FaReddit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiCakeLine } from "react-icons/ri";
+import { isLoggedIn } from "../../utils/auth";
 
-const About = () => {
-  //   const [user] = useAuthState(auth); // will revisit how 'auth' state is passed
-  //   const router = useRouter();
-  //   const selectFileRef = useRef<HTMLInputElement>(null);
-  //   const setCommunityStateValue = useSetRecoilState(communityState);
-
-  //   // April 24 - moved this logic to custom hook in tutorial build (useSelectFile)
-  //   const [selectedFile, setSelectedFile] = useState<string>();
-
-  //   // Added last!
-  //   const [imageLoading, setImageLoading] = useState(false);
-
-  //   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     const reader = new FileReader();
-  //     if (event.target.files?.[0]) {
-  //       reader.readAsDataURL(event.target.files[0]);
-  //     }
-
-  //     reader.onload = (readerEvent) => {
-  //       if (readerEvent.target?.result) {
-  //         setSelectedFile(readerEvent.target?.result as string);
-  //       }
-  //     };
-  //   };
-
-  //   const updateImage = async () => {
-  //     if (!selectedFile) return;
-  //     setImageLoading(true);
-  //     try {
-  //       const imageRef = ref(storage, `communities/${communityData.id}/image`);
-  //       await uploadString(imageRef, selectedFile, "data_url");
-  //       const downloadURL = await getDownloadURL(imageRef);
-  //       await updateDoc(doc(firestore, "communities", communityData.id), {
-  //         imageURL: downloadURL,
-  //       });
-  //       console.log("HERE IS DOWNLOAD URL", downloadURL);
-
-  //       // April 24 - added state update
-  //       setCommunityStateValue((prev) => ({
-  //         ...prev,
-  //         currentCommunity: {
-  //           ...prev.currentCommunity,
-  //           imageURL: downloadURL,
-  //         },
-  //       }));
-  //     } catch (error: any) {
-  //       console.log("updateImage error", error.message);
-  //     }
-  //     // April 24 - removed reload
-  //     // window.location.reload();
-
-  //     setImageLoading(false);
-  //   };
+const About = ({ community }) => {
+  const user = isLoggedIn();
 
   return (
     <Box position="sticky" top="14px">
@@ -84,23 +34,18 @@ const About = () => {
         <Text fontSize="10pt" fontWeight={700}>
           About Community
         </Text>
-        <Icon as={HiOutlineDotsHorizontal} cursor="pointer" />
+        {/* <Icon as={HiOutlineDotsHorizontal} cursor="pointer" /> */}
       </Flex>
-      <Flex direction="column" p={3} bg="white" borderRadius="0px 0px 4px 4px">
-        {/* <Box
-          bg="gray.100"
-          width="100%"
-          p={2}
-          borderRadius={4}
-          border="1px solid"
-          borderColor="gray.300"
-          cursor="pointer"
-        >
-          <Text fontSize="9pt" fontWeight={700} color="blue.500">
-            Add description
-          </Text>
-        </Box> */}
-        {false ? (
+      <Flex
+        direction="column"
+        p={3}
+        bg="white"
+        border={2}
+        borderStyle={"solid"}
+        borderColor={"gray.100"}
+        borderRadius="0px 0px 4px 4px"
+      >
+        {!community ? (
           <Stack mt={2}>
             <SkeletonCircle size="10" />
             <Skeleton height="10px" />
@@ -110,10 +55,10 @@ const About = () => {
           </Stack>
         ) : (
           <>
-            {true && (
+            {community?.bio && (
               <Box
                 bg="gray.100"
-                width="100%"
+                width="240px"
                 p={2}
                 borderRadius={4}
                 border="1px solid"
@@ -121,26 +66,24 @@ const About = () => {
                 cursor="pointer"
               >
                 <Text fontSize="9pt" fontWeight={700} color="blue.500">
-                  Add description
+                  {community.bio}
                 </Text>
               </Box>
             )}
             <Stack spacing={2}>
-              <Flex width="100%" p={2} fontWeight={600} fontSize="10pt">
-                <Flex direction="column" flexGrow={1}>
-                  <Text>
-                    2
-                    {/* {communityData?.numberOfMembers?.toLocaleString()} */}
-                  </Text>
-                  <Text>Members</Text>
-                </Flex>
-                <Flex direction="column" flexGrow={1}>
-                  <Text>1</Text>
-                  <Text>Online</Text>
-                </Flex>
+              <Flex
+                fontSize="10pt"
+                direction="row"
+                justify={"space-between"}
+                flexGrow={1}
+                p={2}
+              >
+                <Text>Members</Text>
+                <Text>{community?.subscribedBy?.length}</Text>
               </Flex>
               <Divider />
-              <Flex
+              <Divider />
+              {/* <Flex
                 align="center"
                 width="100%"
                 p={1}
@@ -148,18 +91,18 @@ const About = () => {
                 fontSize="10pt"
               >
                 <Icon as={RiCakeLine} mr={2} fontSize={18} />
-                {/* {communityData?.createdAt && (
+                {communityData?.createdAt && (
                   <Text>
                     Created{" "}
                     {moment(
                       new Date(communityData.createdAt!.seconds * 1000)
                     ).format("MMM DD, YYYY")}
                   </Text>
-                )} */}
-              </Flex>
-              {true && (
-                <Link to={`/r//submit`}>
-                  <Button mt={3} height="30px">
+                )}
+              </Flex> */}
+              {user && (
+                <Link to={`/submit`}>
+                  <Button mt={3} height="30px" w={"100%"}>
                     Create Post
                   </Button>
                 </Link>

@@ -5,6 +5,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Select,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { BiPoll } from "react-icons/bi";
@@ -59,52 +60,18 @@ export const PostForm = () => {
 
   return (
     <>
-      <Menu
-        bg="gray.50"
-        borderColor="gray.200"
-        height="36px"
-        _hover={{
-          bg: "white",
-          border: "1px solid",
-          borderColor: "blue.500",
-        }}
+      <Select
+        border={2}
+        borderStyle={"solid"}
+        borderColor={"gray.100"}
+        placeholder="Choose a community"
+        size={"md"}
+        width={"fit-content"}
       >
-        {({ isOpen }) => (
-          <>
-            <MenuButton
-              fontSize="10pt"
-              border="1px solid"
-              borderRadius={4}
-              bg="gray.50"
-              width={"fit-content"}
-              borderColor="gray.200"
-              height="46px"
-              px={4}
-              _hover={{
-                bg: "white",
-                border: "1px solid",
-                borderColor: "blue.500",
-              }}
-              isActive={isOpen}
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              minW={36}
-            >
-              {community ? community : "Choose a community"}
-            </MenuButton>
-            <MenuList>
-              <MenuItem fontSize="10pt" onClick={setCommunity("Latest")}>
-                Latest
-              </MenuItem>
-              <MenuItem fontSize="10pt" onClick={setCommunity("Likes")}>
-                Likes
-              </MenuItem>
-              <MenuItem fontSize="10pt" onClick={setCommunity("")}>
-              </MenuItem>
-            </MenuList>
-          </>
-        )}
-      </Menu>
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+      </Select>
       <Flex
         direction="column"
         border={2}

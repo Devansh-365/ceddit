@@ -7,15 +7,17 @@ import { TopCommunities } from "../components/community/top-communities";
 import usePageMeta from "../utils/meta";
 import { SidePostCommunity } from "../components/community/side-post-community";
 import { Stack } from "@chakra-ui/react";
+import { isLoggedIn } from "../utils/auth";
 
 export const ExplorePage = () => {
+  const user = isLoggedIn();
   usePageMeta("Ceddit | Explore");
 
   return (
     <Layout>
       <SecondaryLayout>
         <>
-          <CreatePostBtn />
+          {user ? <CreatePostBtn /> : null}
           <Posts />
         </>
         <Stack gap={4}>

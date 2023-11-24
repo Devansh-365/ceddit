@@ -145,15 +145,24 @@ const PostItem = ({ post }) => {
                 </Text>
               </Stack>
               <Link to={`/community/${post?.community?._id}/${post?._id}`}>
-                <Flex
-                  direction="column"
-                  align="center"
-                  bg={"blue.600"}
-                  p={2}
-                  width="32px"
-                  borderRadius={"full"}
-                >
-                  <Icon as={FiArrowUpRight} fontSize={16} color="white" />
+                <Flex align={"center"}>
+                  <Text
+                    color={"gray.500"}
+                    mr={2}
+                    _hover={{ textDecoration: "underline" }}
+                  >
+                    See more
+                  </Text>
+                  <Flex
+                    direction="column"
+                    align="center"
+                    bg={"blue.600"}
+                    p={2}
+                    width="32px"
+                    borderRadius={"full"}
+                  >
+                    <Icon as={FiArrowUpRight} fontSize={16} color="white" />
+                  </Flex>
                 </Flex>
               </Link>
             </Stack>

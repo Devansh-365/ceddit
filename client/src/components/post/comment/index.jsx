@@ -9,10 +9,17 @@ import {
 } from "@chakra-ui/react";
 import CommentInput from "./comment-input";
 import CommentItem from "./comment-item";
+import { getPostComments } from "../../../api/comment";
 
-const Comments = ({ user, community }) => {
+const Comments = ({ user, post }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    getPostComments(post?._id).then((data) => {
+      setComments(data);
+    });
+  }, [post]);
 
   return (
     <Box bg="white" pt={4} borderRadius="0px 0px 4px 4px">
@@ -26,7 +33,7 @@ const Comments = ({ user, community }) => {
         />
       </Flex>
       <Stack spacing={6} p={2}>
-        {false ? (
+        {!comments ? (
           <>
             {[0, 1, 2].map((item) => (
               <Box key={item} padding="6" bg="white">
@@ -37,22 +44,24 @@ const Comments = ({ user, community }) => {
           </>
         ) : (
           <>
-            <CommentItem
-              comment={[]}
-              onDeleteComment={() => {}}
-              isLoading={false}
-              userId={user?.userId}
-            />
             {!!comments.length ? (
               <>
                 {comments.map((item) => (
-                  <CommentItem
-                    key={item.id}
-                    comment={item}
-                    onDeleteComment={() => {}}
-                    isLoading={false}
-                    userId={user?.userId}
-                  />
+                  <Box
+                    border={2}
+                    borderStyle={"solid"}
+                    borderColor={"gray.100"}
+                    py={2}
+                    px={2}
+                  >
+                    <CommentItem
+                      key={item._id}
+                      comment={item}
+                      onDeleteComment={() => {}}
+                      isLoading={false}
+                      userId={user?.userId}
+                    />
+                  </Box>
                 ))}
               </>
             ) : (

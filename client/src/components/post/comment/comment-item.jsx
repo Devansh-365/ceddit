@@ -8,14 +8,22 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-// import moment from "moment";
+import moment from "moment";
 import { FaReddit } from "react-icons/fa";
 import {
   IoArrowDownCircleOutline,
   IoArrowUpCircleOutline,
 } from "react-icons/io5";
+import { isLoggedIn } from "../../../utils/auth";
 
-const CommentItem = ({ comment, onDeleteComment, isLoading, userId }) => {
+const CommentItem = ({
+  comment,
+  onDeleteComment,
+  isLoading,
+  userId,
+  reply = false,
+}) => {
+  const user = isLoggedIn();
   // const [loading, setLoading] = useState(false);
 
   // const handleDelete = useCallback(async () => {
@@ -34,7 +42,14 @@ const CommentItem = ({ comment, onDeleteComment, isLoading, userId }) => {
   // }, [setLoading]);
 
   return (
-    <Flex>
+    <Flex
+      border={reply && 2}
+      borderStyle={"solid"}
+      borderColor={"gray.100"}
+      flexDirection={"column"}
+      px={reply && 2}
+      py={reply && 2}
+    >
       <Box mr={2}>
         <Icon as={FaReddit} fontSize={30} color="gray.300" />
       </Box>
@@ -44,19 +59,14 @@ const CommentItem = ({ comment, onDeleteComment, isLoading, userId }) => {
             fontWeight={700}
             _hover={{ textDecoration: "underline", cursor: "pointer" }}
           >
-            sdsd
+            {comment?.commentedBy?.username}
           </Text>
-          {comment.createdAt?.seconds && (
-            <Text color="gray.600">
-              {/* {moment(new Date(comment.createdAt?.seconds * 1000)).fromNow()} */}
-            </Text>
+          {comment?.createdAt && (
+            <Text color="gray.600">{moment(comment?.createdAt).fromNow()}</Text>
           )}
           {isLoading && <Spinner size="sm" />}
         </Stack>
-        <Text fontSize="10pt">
-          sfdsdsd Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-          Laboriosam atque ad porro.
-        </Text>
+        <Text fontSize="10pt">{comment?.content}</Text>
         <Stack
           direction="row"
           align="center"
@@ -82,6 +92,22 @@ const CommentItem = ({ comment, onDeleteComment, isLoading, userId }) => {
           )}
         </Stack>
       </Stack>
+      {comment?.children && (
+        <Stack spacing={2} py={2} px={2}>
+          {comment?.children.map((reply, i) => {
+            return (
+              <CommentItem
+                key={i}
+                comment={reply}
+                onDeleteComment={() => {}}
+                isLoading={false}
+                userId={user?.userId}
+                reply={true}
+              />
+            );
+          })}
+        </Stack>
+      )}
     </Flex>
   );
 };

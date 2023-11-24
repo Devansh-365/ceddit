@@ -14,10 +14,27 @@ import { BsLink45Deg } from "react-icons/bs";
 import { FaReddit } from "react-icons/fa";
 import { IoImageOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { sortByLatest, sortByLikes, sortByComments } from '../../redux/sortingSlice'; 
 
 export const CreatePostBtn = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const handleSort = (sortType) => {
+    switch (sortType) {
+      case 'latest':
+        dispatch(sortByLatest());
+        break;
+      case 'likes':
+        dispatch(sortByLikes());
+        break;
+      case 'comments':
+        dispatch(sortByComments());
+        break;
+      default:
+        break;
+    }}
+  
   return (
     <Flex
       justify="space-evenly"
@@ -93,9 +110,9 @@ export const CreatePostBtn = () => {
               Sort By
             </MenuButton>
             <MenuList>
-              <MenuItem fontSize="10pt">Latest</MenuItem>
-              <MenuItem fontSize="10pt">Likes</MenuItem>
-              <MenuItem fontSize="10pt">Comment</MenuItem>
+            <MenuItem fontSize="10pt" onClick={() => handleSort('latest')}>Latest</MenuItem>
+              <MenuItem fontSize="10pt" onClick={() => handleSort('likes')}>Likes</MenuItem>
+              <MenuItem fontSize="10pt" onClick={() => handleSort('comments')}>Comments</MenuItem>
             </MenuList>
           </>
         )}

@@ -7,10 +7,13 @@ import { ExplorePage } from "./pages/explore-page";
 import ProtectedRoute from "./components/protected-route";
 import { CommunityPostPage } from "./pages/community-post-page";
 import { CreatePostPage } from "./pages/create-post-page";
+import { Provider } from 'react-redux';
+import store from "./redux/store";
 
 function App() {
   return (
     <>
+    <Provider store={store}>
       <Routes>
         <Route path="/" element={<Homepage />} />
 
@@ -42,6 +45,7 @@ function App() {
           element={<CommunityPostPage />}
         />
       </Routes>
+      </Provider>
     </>
   );
 }

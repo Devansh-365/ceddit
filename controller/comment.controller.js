@@ -3,8 +3,9 @@ const Post = require("../model/post.model");
 
 const createComment = async (req, res) => {
   try {
-    const { content, userId, parentId } = req.body;
+    const { content, parentId } = req.body;
     const postId = req.params.postId;
+    const userId = req.user.userId;
 
     const post = await Post.findById(postId);
 
@@ -127,6 +128,7 @@ const updateCommentForPost = async (req, res) => {
     const userId = req.user.userId;
     const postId = req.params.postId;
 
+    const postId = req.params.postId;
     const commentId = req.params.id;
 
     const post = await Post.findById(postId);
@@ -135,7 +137,7 @@ const updateCommentForPost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const comment = post.comments.find((c) => c._id.toString() === commentId);
+    const comment = post.comments.findById(commentId);
 
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });

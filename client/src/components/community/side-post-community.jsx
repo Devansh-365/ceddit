@@ -53,7 +53,6 @@ export const SidePostCommunity = () => {
 
   useEffect(() => {
     getCommunities().then((data) => {
-      console.log("COMMUNITIES : ", data.communities);
       setCommunities(data.communities);
     });
   }, []);

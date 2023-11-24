@@ -125,6 +125,7 @@ const updateCommentForPost = async (req, res) => {
   try {
     const { content } = req.body;
     const userId = req.user.userId;
+    const postId = req.params.postId;
 
     const commentId = req.params.id;
 

@@ -1,4 +1,5 @@
 import { BASE_URL } from "../config";
+import { isLoggedIn } from "../utils/auth";
 
 const createPost = async (post, user) => {
   try {
@@ -51,6 +52,45 @@ const upvotePost = async (postId, user) => {
   }
 };
 
+const updatePost = async (postId, data) => {
+  try {
+    const user = isLoggedIn();
+    if (!user) {
+      return new Error("User not logged in");
+    }
+    const res = await fetch(BASE_URL + "api/posts/" + postId, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": user.token,
+      },
+      body: JSON.stringify(data),
+    });
+    return await res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deletePost = async (postId) => {
+  try {
+    const user = isLoggedIn();
+    if (!user) {
+      return new Error("User not logged in");
+    }
+    const res = await fetch(BASE_URL + "api/posts/" + postId, {
+      method: "DELETE",
+      headers: {
+        "x-access-token": user.token,
+      },
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const downvotePost = async (postId, user) => {
   try {
     const res = await fetch(BASE_URL + `api/posts/${postId}/downvote`, {
@@ -67,4 +107,12 @@ const downvotePost = async (postId, user) => {
   }
 };
 
-export { createPost, getPosts, getPost, upvotePost, downvotePost };
+export {
+  createPost,
+  getPosts,
+  getPost,
+  deletePost,
+  updatePost,
+  upvotePost,
+  downvotePost,
+};

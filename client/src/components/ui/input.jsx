@@ -10,12 +10,14 @@ const InputItem = ({
   mb,
   bg,
   size,
+  defaultValue,
 }) => {
   return (
     <Input
       name={name}
       placeholder={placeholder}
       value={value}
+      defaultValue={defaultValue}
       required
       onChange={onChange}
       mb={mb}

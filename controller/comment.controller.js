@@ -126,18 +126,9 @@ const updateCommentForPost = async (req, res) => {
   try {
     const { content } = req.body;
     const userId = req.user.userId;
-    const postId = req.params.postId;
-
-    const postId = req.params.postId;
+  
     const commentId = req.params.id;
-
-    const post = await Post.findById(postId);
-
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
-    const comment = post.comments.findById(commentId);
+    const comment = Comment.findById(commentId);
 
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
@@ -148,7 +139,7 @@ const updateCommentForPost = async (req, res) => {
     }
 
     comment.content = content;
-    await post.save();
+   
 
     res.status(200).json({ message: "Comment updated successfully", comment });
   } catch (error) {

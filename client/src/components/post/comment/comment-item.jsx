@@ -15,6 +15,8 @@ import {
   IoArrowUpCircleOutline,
 } from "react-icons/io5";
 import { isLoggedIn } from "../../../utils/auth";
+import { DeleteCommentModal } from "../../modals/delete-comment-modal";
+import { EditCommentModel } from "../../modals/edit-comment-modal";
 
 const CommentItem = ({
   comment,
@@ -24,6 +26,7 @@ const CommentItem = ({
   reply = false,
 }) => {
   const user = isLoggedIn();
+  console.log("COMMENT ITEM: ", comment);
   // const [loading, setLoading] = useState(false);
 
   // const handleDelete = useCallback(async () => {
@@ -78,16 +81,8 @@ const CommentItem = ({
           <Icon as={IoArrowDownCircleOutline} />
           {userId === comment.creatorId && (
             <>
-              <Text fontSize="9pt" _hover={{ color: "blue.500" }}>
-                Edit
-              </Text>
-              <Text
-                fontSize="9pt"
-                _hover={{ color: "blue.500" }}
-                onClick={() => onDeleteComment(comment)}
-              >
-                Delete
-              </Text>
+              <EditCommentModel comment={comment} />
+              <DeleteCommentModal comment={comment} />
             </>
           )}
         </Stack>

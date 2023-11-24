@@ -136,7 +136,7 @@ const updateCommentForPost = async (req, res) => {
     console.log('userId:', userId);
     console.log('comment.commentedBy:', comment.commentedBy);
 
-    if (!comment.commentedBy || comment.commentedBy._id.toString() !== userId.toString() && !req.user.isAdmin) {
+    if (!comment.commentedBy || comment.commentedBy._id.toString() !== userId.toString()) {
       return res.status(401).json({ message: "Access is denied." });
     }
 
@@ -160,12 +160,12 @@ const deleteCommentForPost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
-    const comment = await Comment.findById(commentId);
+    const comment = await Comment.findById(commentId).populate('commentedBy');
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    if (comment.commentedBy.id.toString() !== userId && !isAdmin) {
+    if (comment.commentedBy.id.toString() !== userId ) {
       return res.status(401).json({ message: "Access is denied." });
     }
     await Comment.deleteOne({ _id: commentId });

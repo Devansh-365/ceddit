@@ -42,6 +42,10 @@ const getPostComments = async (req, res) => {
   try {
     const postId = req.params.id;
 
+    if (!postId) {
+      return res.status(400).json({ message: "Post ID is required" });
+    }
+
     const comments = await Comment.find({ post: postId })
       .populate("commentedBy", "-password")
       .sort("-createdAt");

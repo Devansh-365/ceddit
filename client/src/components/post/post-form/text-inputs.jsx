@@ -20,8 +20,8 @@ const TextInputs = ({ textInputs, onChange, handleCreatePost, loading }) => {
         placeholder="Title"
       />
       <Textarea
-        name="body"
-        value={textInputs.body}
+        name="content"
+        value={textInputs.content}
         onChange={onChange}
         fontSize="10pt"
         placeholder="Text (optional)"

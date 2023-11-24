@@ -1,8 +1,12 @@
 import { BASE_URL } from "../config";
 import { isLoggedIn } from "../utils/auth";
 
-const createPost = async (post, user) => {
+const createPost = async (post) => {
   try {
+    const user = isLoggedIn();
+    if (!user) {
+      return new Error("User not logged in");
+    }
     const res = await fetch(BASE_URL + "api/posts", {
       method: "POST",
       headers: {

@@ -66,6 +66,7 @@ const PostItem = ({ post }) => {
     //   // setError
     // }
   };
+  console.log("post : ", post);
 
   return (
     <>
@@ -176,25 +177,25 @@ const PostItem = ({ post }) => {
               </Stack>
             )}
             <Text fontSize="12pt" fontWeight={600}>
-              {post.title}
+              {post.title}122
             </Text>
             <Text fontSize="10pt">{post?.content}</Text>
-            {/* {post.imageURL && (
-            <Flex justify="center" align="center" p={2}>
-              {loadingImage && (
-                <Skeleton height="200px" width="100%" borderRadius={4} />
-              )}
-              <Image
-                // width="80%"
-                // maxWidth="500px"
-                maxHeight="460px"
-                src={post.imageURL}
-                display={loadingImage ? "none" : "unset"}
-                onLoad={() => setLoadingImage(false)}
-                alt="Post Image"
-              />
-            </Flex>
-          )} */}
+            {post.imageUrl && (
+              <Flex justify="center" align="center" p={2}>
+                {/* {loadingImage && (
+                  <Skeleton height="200px" width="100%" borderRadius={4} />
+                )} */}
+                <Image
+                  width="80%"
+                  maxWidth="500px"
+                  maxHeight="460px"
+                  src={post.imageUrl}
+                  display={false ? "none" : "unset"}
+                  // onLoad={() => setLoadingImage(false)}
+                  alt="Post Image"
+                />
+              </Flex>
+            )}
           </Stack>
           <Flex ml={1} mb={0.5} color="gray.500" fontWeight={600}>
             <Flex

@@ -7,7 +7,7 @@ import {
   MenuList,
   Select,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BiPoll } from "react-icons/bi";
 import { BsLink45Deg, BsMic } from "react-icons/bs";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
@@ -16,6 +16,10 @@ import TabItem from "./tab-item";
 import TextInputs from "./text-inputs";
 import ImageUpload from "./image-upload";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import toast from "react-hot-toast";
+import { createPost } from "../../../api/posts";
+import { getCommunities } from "../../../api/communities";
+import { useNavigate } from "react-router-dom";
 
 const formTabs = [
   {
@@ -32,11 +36,19 @@ export const PostForm = () => {
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [textInputs, setTextInputs] = useState({
     title: "",
-    body: "",
+    content: "",
   });
   const [community, setCommunity] = useState("");
   const [selectedFile, setSelectedFile] = useState();
   const selectFileRef = useRef(null);
+  const [communities, setCommunities] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getCommunities().then((data) => {
+      setCommunities(data.communities);
+    });
+  }, [community, setCommunity]);
 
   const onTextChange = ({ target: { name, value } }) => {
     setTextInputs((prev) => ({
@@ -58,6 +70,21 @@ export const PostForm = () => {
     };
   };
 
+  const handleCreatePost = async () => {
+    const data = await createPost({
+      title: textInputs.title,
+      content: textInputs.content,
+      imageUrl: selectedFile,
+      communityId: community,
+    });
+    if (!data.error) {
+      toast.success("Post created successfully!");
+      navigate(`/explore`);
+    } else {
+      toast.error("Post failed to create!");
+    }
+  };
+
   return (
     <>
       <Select
@@ -67,10 +94,13 @@ export const PostForm = () => {
         placeholder="Choose a community"
         size={"md"}
         width={"fit-content"}
+        onChange={(e) => setCommunity(e.target.value)}
       >
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
+        {communities.map((item) => (
+          <option key={item._id} value={item._id}>
+            {item.name}
+          </option>
+        ))}
       </Select>
       <Flex
         direction="column"
@@ -95,7 +125,7 @@ export const PostForm = () => {
             <TextInputs
               textInputs={textInputs}
               onChange={onTextChange}
-              handleCreatePost={() => {}}
+              handleCreatePost={handleCreatePost}
               loading={false}
             />
           )}

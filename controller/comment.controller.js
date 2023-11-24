@@ -38,6 +38,47 @@ const writeCommentForPost = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+const getPostComments = async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    if (!postId) {
+      return res.status(400).json({ message: "Post ID is required" });
+    }
+
+    const comments = await Comment.find({ post: postId })
+      .populate("commentedBy", "-password")
+      .sort("-createdAt");
+
+    let commentParents = {};
+    let rootComments = [];
+    for (let i = 0; i < comments.length; i++) {
+      let comment = comments[i];
+      commentParents[comment._id] = comment;
+    }
+    for (let i = 0; i < comments.length; i++) {
+      const comment = comments[i];
+      if (comment.parent) {
+        let commentParent = commentParents[comment.parent];
+        if (!commentParent) {
+          commentParent = { _id: comment.parent, children: [] };
+          commentParents[comment.parent] = commentParent;
+        }
+        commentParent.children = [...commentParent.children, comment];
+      } else {
+        rootComments = [...rootComments, comment];
+      }
+    }
+    return res.status(200).json(rootComments);
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ message: "Something Went Wrong!", error: err.message });
+  }
+};
+
 const addReply = async (req, res) => {
   try {
     const { content } = req.body;
@@ -82,16 +123,9 @@ const updateCommentForPost = async (req, res) => {
     const { content } = req.body;
     const userId = req.user.userId;
 
+    const postId = req.params.postId;
     const commentId = req.params.id;
-
-    const post = await Post.findById(postId);
-
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
-    const comment = post.comments.find((c) => c._id.toString() === commentId);
-
+    const comment = await Comment.findById(commentId).populate("commentedBy");
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
@@ -116,39 +150,34 @@ const deleteCommentForPost = async (req, res) => {
     const isAdmin = req.user.isAdmin;
     const postId = req.params.postId;
     const commentId = req.params.id;
+    const comment = await Comment.findById(commentId);
 
-    const post = await Post.findById(postId);
-
-    if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+    if (!comment) {
+      throw new Error("Comment not found");
     }
 
-    const commentIndex = post.comments.findIndex((c) => c._id.toString() === commentId);
+    // if (comment.commentedBy != userId && !isAdmin) {
+    //   throw new Error("Not authorized to delete comment");
+    // }
 
-    if (commentIndex === -1) {
-      return res.status(404).json({ message: 'Comment not found' });
-    }
+    await Comment.deleteOne({ _id: commentId });
 
-    const comment = post.comments[commentIndex];
+    const post = await Post.findById(comment.post);
 
-    if (comment.commentedBy.toString() !== userId && !isAdmin) {
-      return res.status(401).json({ message: 'Access is denied.' });
-    }
-
-    post.comments.splice(commentIndex, 1);
-    post.commentCount -= 1;
+    post.commentCount = (await Comment.find({ post: post._id })).length;
 
     await post.save();
 
-    res.status(204).end();
+    return res.status(200).json(comment);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error', error });
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 
 module.exports = {
   writeCommentForPost,
+  getPostComments,
   addReply,
   updateCommentForPost,
   deleteCommentForPost,

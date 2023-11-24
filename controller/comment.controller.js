@@ -1,14 +1,11 @@
 const Comment = require("../model/comment.model");
 const Post = require("../model/post.model");
 
-const writeCommentForPost = async (req, res) => {
+const createComment = async (req, res) => {
   try {
-    // Extract necessary data from the request
-    const { content } = req.body;
-    const commentedBy = req.user.userId;
+    const { content, userId, parentId } = req.body;
     const postId = req.params.postId;
 
-    // Find the post by ID
     const post = await Post.findById(postId);
 
     if (!post) {
@@ -17,27 +14,69 @@ const writeCommentForPost = async (req, res) => {
     if (!post.comments) {
       post.comments = [];
     }
-    // Create a new comment
-    const newComment = new Comment({
-      commentedBy,
+    const comment = await Comment.create({
       content,
+      parent: parentId,
+      post: postId,
+      commentedBy: userId,
     });
 
-    await newComment.save();
-
-    post.comments.push(newComment);
+    await comment.save();
     post.commentCount += 1;
-
     await post.save();
 
+    await Comment.populate(comment, {
+      path: "commentedBy",
+      select: "-password",
+    });
     res
-      .status(201)
-      .json({ message: "Comment added successfully", comment: newComment });
+      .status(200)
+      .json({ message: "Comment added successfully", comment: comment });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+const getPostComments = async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    const comments = await Comment.find({ post: postId })
+      .populate("commentedBy", "-password")
+      .sort("-createdAt");
+
+    let commentParents = {};
+    let rootComments = [];
+
+    for (let i = 0; i < comments.length; i++) {
+      let comment = comments[i];
+      commentParents[comment._id] = comment;
+    }
+
+    for (let i = 0; i < comments.length; i++) {
+      const comment = comments[i];
+      if (comment.parent) {
+        let commentParent = commentParents[comment.parent];
+        if (!commentParent) {
+          commentParent = { _id: comment.parent, children: [] };
+          commentParents[comment.parent] = commentParent;
+        }
+        commentParent.children = [...commentParent.children, comment];
+      } else {
+        rootComments = [...rootComments, comment];
+      }
+    }
+
+    return res.status(200).json(rootComments);
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ message: "Something Went Wrong!", error: err.message });
+  }
+};
+
 const addReply = async (req, res) => {
   try {
     const { content } = req.body;
@@ -77,6 +116,7 @@ const addReply = async (req, res) => {
       .json({ message: " could not save comment", error: err.message });
   }
 };
+
 const updateCommentForPost = async (req, res) => {
   try {
     const { content } = req.body;
@@ -124,7 +164,7 @@ const deleteCommentForPost = async (req, res) => {
     }
     const comment = await Comment.findById(commentId);
     if (!comment) {
-      return res.status(404).json({ message: "Comment not found"})
+      return res.status(404).json({ message: "Comment not found" });
     }
 
     if (comment.commentedBy.toString() !== userId && !isAdmin) {
@@ -135,12 +175,13 @@ const deleteCommentForPost = async (req, res) => {
 
     await post.save();
 
-    res.status(200).json({message:"Comment deleted successfully", comment});
+    res.status(200).json({ message: "Comment deleted successfully", comment });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
 const upvoteComment = async (req, res) => {
   const commentId = req.params.commentId;
   const userId = req.user.userId;
@@ -155,16 +196,21 @@ const upvoteComment = async (req, res) => {
     const hasUpvoted = comment.upvotedBy.includes(userId);
 
     if (hasUpvoted) {
-      
-      comment.upvotedBy = comment.upvotedBy.filter((id) => id.toString() !== userId);
+      comment.upvotedBy = comment.upvotedBy.filter(
+        (id) => id.toString() !== userId
+      );
       await comment.save();
-      return res.status(200).json({ message: "Successfully removed upvote from the comment" });
+      return res
+        .status(200)
+        .json({ message: "Successfully removed upvote from the comment" });
     }
 
     comment.upvotedBy.push(userId);
     await comment.save();
 
-    return res.status(200).json({ message: "Successfully upvoted the comment" });
+    return res
+      .status(200)
+      .json({ message: "Successfully upvoted the comment" });
   } catch (error) {
     console.error(`Error upvoting comment: ${error.message}`);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -186,28 +232,36 @@ const downvoteComment = async (req, res) => {
     const hasDownvoted = comment.downvotedBy.includes(userId);
 
     if (hasUpvoted) {
-      comment.upvotedBy = comment.upvotedBy.filter((id) => id.toString() !== userId);
+      comment.upvotedBy = comment.upvotedBy.filter(
+        (id) => id.toString() !== userId
+      );
     }
 
     if (hasDownvoted) {
-      comment.downvotedBy = comment.downvotedBy.filter((id) => id.toString() !== userId);
+      comment.downvotedBy = comment.downvotedBy.filter(
+        (id) => id.toString() !== userId
+      );
     } else {
       comment.downvotedBy.push(userId);
     }
 
     await comment.save();
 
-    return res.status(200).json({ message: "Successfully downvoted the comment" });
+    return res
+      .status(200)
+      .json({ message: "Successfully downvoted the comment" });
   } catch (error) {
     console.error(`Error downvoting comment: ${error.message}`);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 module.exports = {
-  writeCommentForPost,
+  createComment,
+  getPostComments,
   addReply,
   updateCommentForPost,
   deleteCommentForPost,
   upvoteComment,
-  downvoteComment
+  downvoteComment,
 };

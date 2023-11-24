@@ -177,7 +177,7 @@ const PostItem = ({ post }) => {
               </Stack>
             )}
             <Text fontSize="12pt" fontWeight={600}>
-              {post.title}122
+              {post.title}
             </Text>
             <Text fontSize="10pt">{post?.content}</Text>
             {post.imageUrl && (

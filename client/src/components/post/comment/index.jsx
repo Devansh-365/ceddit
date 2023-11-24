@@ -32,10 +32,10 @@ const Comments = ({ user, post }) => {
     });
     if (data) {
       toast.success("Comment created successfully!");
+      navigate(0);
     } else {
       toast.error("Comment created failed!");
     }
-    navigate(0);
   };
 
   return (

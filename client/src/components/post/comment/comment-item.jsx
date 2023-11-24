@@ -26,7 +26,6 @@ const CommentItem = ({
   reply = false,
 }) => {
   const user = isLoggedIn();
-  console.log("COMMENT ITEM: ", comment);
   // const [loading, setLoading] = useState(false);
 
   // const handleDelete = useCallback(async () => {
@@ -79,7 +78,7 @@ const CommentItem = ({
         >
           <Icon as={IoArrowUpCircleOutline} />
           <Icon as={IoArrowDownCircleOutline} />
-          {userId === comment.creatorId && (
+          {user && (
             <>
               <EditCommentModel comment={comment} />
               <DeleteCommentModal comment={comment} />

@@ -41,7 +41,7 @@ export const EditCommentModel = ({ comment }) => {
       const data = await updateComment(comment?.post, comment?._id, form);
       if (!data.error) {
         toast.success("Comment updated successfully!");
-        navigate(0);
+        // navigate(0);
         onClose();
       } else {
         toast.error("Comment failed to update!");

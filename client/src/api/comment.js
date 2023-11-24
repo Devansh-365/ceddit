@@ -29,7 +29,7 @@ const updateComment = async (postId, commentId, data) => {
     if (!user) {
       return new Error("User not logged in");
     }
-    const res = await fetch(BASE_URL + `api/comment/${postId}/${commentId}`, {
+    const res = await fetch(BASE_URL + `api/comment/${commentId}`, {
       method: "PUT",
       headers: {
         Accept: "application/json",

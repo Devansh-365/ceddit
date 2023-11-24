@@ -229,7 +229,7 @@ const PostItem = ({ post }) => {
             <Icon as={IoBookmarkOutline} mr={2} />
             <Text fontSize="9pt">Save</Text>
           </Flex> */}
-            {true && (
+            {user && (
               <Flex
                 align="center"
                 p="8px 10px"
@@ -241,7 +241,7 @@ const PostItem = ({ post }) => {
                 <EditPostModel post={post} />
               </Flex>
             )}
-            {true && (
+            {user && (
               <Flex
                 align="center"
                 p="8px 10px"

@@ -3,12 +3,10 @@ const Post = require("../model/post.model");
 
 const writeCommentForPost = async (req, res) => {
   try {
-    // Extract necessary data from the request
-    const { content } = req.body;
-    const commentedBy = req.user.userId;
+    const { content, parentId } = req.body;
     const postId = req.params.postId;
+    const userId = req.user.userId;
 
-    // Find the post by ID
     const post = await Post.findById(postId);
 
     if (!post) {
@@ -17,22 +15,22 @@ const writeCommentForPost = async (req, res) => {
     if (!post.comments) {
       post.comments = [];
     }
-    // Create a new comment
-    const newComment = new Comment({
-      commentedBy,
+    const comment = await Comment.create({
       content,
+      parent: parentId,
+      post: postId,
+      commentedBy: userId,
     });
-
-    await newComment.save();
-
-    post.comments.push(newComment);
+    await comment.save();
     post.commentCount += 1;
-
     await post.save();
-
+    await Comment.populate(comment, {
+      path: "commentedBy",
+      select: "-password",
+    });
     res
-      .status(201)
-      .json({ message: "Comment added successfully", comment: newComment });
+      .status(200)
+      .json({ message: "Comment added successfully", comment: comment });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", error });

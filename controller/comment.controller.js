@@ -126,27 +126,27 @@ const updateCommentForPost = async (req, res) => {
   try {
     const { content } = req.body;
     const userId = req.user.userId;
-  
     const commentId = req.params.id;
-    const comment = Comment.findById(commentId);
+    const comment = await Comment.findById(commentId).populate('commentedBy');
 
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    if (comment.commentedBy.toString() !== userId && !req.user.isAdmin) {
+    console.log('userId:', userId);
+    console.log('comment.commentedBy:', comment.commentedBy);
+
+    if (!comment.commentedBy || comment.commentedBy._id.toString() !== userId.toString() && !req.user.isAdmin) {
       return res.status(401).json({ message: "Access is denied." });
     }
 
     comment.content = content;
-   
 
     res.status(200).json({ message: "Comment updated successfully", comment });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error", error });
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
-};
+}
 
 const deleteCommentForPost = async (req, res) => {
   try {
@@ -165,7 +165,7 @@ const deleteCommentForPost = async (req, res) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    if (comment.commentedBy.toString() !== userId && !isAdmin) {
+    if (comment.commentedBy.id.toString() !== userId && !isAdmin) {
       return res.status(401).json({ message: "Access is denied." });
     }
     await Comment.deleteOne({ _id: commentId });

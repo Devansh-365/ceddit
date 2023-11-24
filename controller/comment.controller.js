@@ -141,6 +141,7 @@ const updateCommentForPost = async (req, res) => {
     }
 
     comment.content = content;
+    comment.save();
 
     res.status(200).json({ message: "Comment updated successfully", comment });
   } catch (error) {

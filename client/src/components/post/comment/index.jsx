@@ -49,7 +49,7 @@ const Comments = ({ user, post }) => {
           onCreateComment={onCreateComment}
         />
       </Flex>
-      <Stack spacing={6} p={2}>
+      <Stack spacing={6} py={2}>
         {!comments ? (
           <>
             {[0, 1, 2].map((item) => (

@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import moment from "moment";
-import { FaReddit } from "react-icons/fa";
+import { FaConnectdevelop, FaReddit } from "react-icons/fa";
 import {
   IoArrowDownCircleOutline,
   IoArrowUpCircleOutline,
@@ -17,6 +17,11 @@ import {
 import { isLoggedIn } from "../../../utils/auth";
 import { DeleteCommentModal } from "../../modals/delete-comment-modal";
 import { EditCommentModel } from "../../modals/edit-comment-modal";
+import { BsChat } from "react-icons/bs";
+import CommentInput from "./comment-input";
+import { createComment } from "../../../api/comment";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CommentItem = ({
   comment,
@@ -26,22 +31,23 @@ const CommentItem = ({
   reply = false,
 }) => {
   const user = isLoggedIn();
-  // const [loading, setLoading] = useState(false);
+  const [replyInput, setReplyInput] = useState(false);
+  const [replyComment, setReplyComment] = useState("");
 
-  // const handleDelete = useCallback(async () => {
-  //   setLoading(true);
-  //   try {
-  //     const success = await onDeleteComment(comment);
+  const navigate = useNavigate();
 
-  //     if (!success) {
-  //       throw new Error("Error deleting comment");
-  //     }
-  //   } catch (error: any) {
-  //     console.log(error.message);
-  //     // setError
-  //     setLoading(false);
-  //   }
-  // }, [setLoading]);
+  const onCreateReplyComment = async () => {
+    const data = await createComment(comment?.post, {
+      content: replyComment,
+      parentId: comment?._id,
+    });
+    if (!data.error) {
+      toast.success("Comment created successfully!");
+      navigate(0);
+    } else {
+      toast.error("Comment created failed!");
+    }
+  };
 
   return (
     <Flex
@@ -49,11 +55,11 @@ const CommentItem = ({
       borderStyle={"solid"}
       borderColor={"gray.100"}
       flexDirection={"column"}
-      px={reply && 2}
-      py={reply && 2}
+      px={reply ? 2 : 0}
+      py={reply ? 2 : 0}
     >
-      <Box mr={2}>
-        <Icon as={FaReddit} fontSize={30} color="gray.300" />
+      <Box mr={2} mb={1}>
+        <Icon as={FaConnectdevelop} fontSize={30} color="gray.300" />
       </Box>
       <Stack spacing={1}>
         <Stack direction="row" align="center" spacing={2} fontSize="8pt">
@@ -78,6 +84,14 @@ const CommentItem = ({
         >
           <Icon as={IoArrowUpCircleOutline} />
           <Icon as={IoArrowDownCircleOutline} />
+          <Flex
+            as={"button"}
+            onClick={() => setReplyInput(!replyInput)}
+            _hover={{ color: "blue.500" }}
+          >
+            <Icon as={BsChat} mr={1} />
+            <Text fontSize="9pt">Reply</Text>
+          </Flex>
           {user && (
             <>
               <EditCommentModel comment={comment} />
@@ -85,6 +99,17 @@ const CommentItem = ({
             </>
           )}
         </Stack>
+        {replyInput && user && (
+          <Flex direction="column" mb={6} fontSize="10pt" width="100%">
+            <CommentInput
+              comment={replyComment}
+              setComment={setReplyComment}
+              loading={false}
+              user={user}
+              onCreateComment={onCreateReplyComment}
+            />
+          </Flex>
+        )}
       </Stack>
       {comment?.children && (
         <Stack spacing={2} py={2} px={2}>

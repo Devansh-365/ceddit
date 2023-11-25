@@ -11,7 +11,7 @@ export const Posts = () => {
     getPosts().then((data) => {
       setPosts(data);
     });
-  }, []);
+  }, [posts]);
 
   return (
     <>

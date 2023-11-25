@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { BsChat, BsDot } from "react-icons/bs";
-import { FaConnectdevelop, FaReddit } from "react-icons/fa";
+import { FaConnectdevelop } from "react-icons/fa";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
@@ -66,7 +66,6 @@ const PostItem = ({ post }) => {
     //   // setError
     // }
   };
-  console.log("post : ", post);
 
   return (
     <>

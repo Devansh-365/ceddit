@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiCakeLine } from "react-icons/ri";
 import { isLoggedIn } from "../../utils/auth";
+import moment from "moment";
 
 const About = ({ community }) => {
   const user = isLoggedIn();
@@ -82,8 +83,7 @@ const About = ({ community }) => {
                 <Text>{community?.subscribedBy?.length}</Text>
               </Flex>
               <Divider />
-              <Divider />
-              {/* <Flex
+              <Flex
                 align="center"
                 width="100%"
                 p={1}
@@ -91,15 +91,15 @@ const About = ({ community }) => {
                 fontSize="10pt"
               >
                 <Icon as={RiCakeLine} mr={2} fontSize={18} />
-                {communityData?.createdAt && (
+                {community?.createdAt && (
                   <Text>
                     Created{" "}
-                    {moment(
-                      new Date(communityData.createdAt!.seconds * 1000)
-                    ).format("MMM DD, YYYY")}
+                    {moment(new Date(community?.createdAt)).format(
+                      "MMM DD, YYYY"
+                    )}
                   </Text>
                 )}
-              </Flex> */}
+              </Flex>
               {user && (
                 <Link to={`/submit`}>
                   <Button mt={3} height="30px" w={"100%"}>

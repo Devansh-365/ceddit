@@ -69,11 +69,12 @@ export default function Footer() {
       <Container
         as={Stack}
         maxW={"6xl"}
-        py={4}
+        py={3}
         direction={{ base: "column", md: "row" }}
         spacing={4}
         justify={{ base: "center", md: "center" }}
         align={{ base: "center", md: "center" }}
+        fontSize={"10pt"}
       >
         {/* <Logo /> */}
         <Text>© {getCurrentYear()} Ceddit. All rights reserved</Text>

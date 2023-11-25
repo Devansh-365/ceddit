@@ -80,7 +80,7 @@ export const EditPostModel = ({ post }) => {
                   Content
                 </Text>
                 <Textarea
-                  name="bio"
+                  name="content"
                   defaultValue={post?.content}
                   onChange={onChange}
                   fontSize="10pt"

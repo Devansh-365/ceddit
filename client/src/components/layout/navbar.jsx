@@ -72,6 +72,7 @@ export default function Navbar() {
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             fontFamily={"heading"}
             fontWeight={"bold"}
+            fontSize={"12pt"}
             color={useColorModeValue("blue.600", "blue.400")}
             as={"a"}
             href="/"
@@ -108,10 +109,10 @@ export default function Navbar() {
                   }
                 />
               </MenuButton>
-              <MenuList>
-                <MenuItem as={"a"} href={`/users/${user.userId}`}>
+              <MenuList fontSize={"10pt"}>
+                {/* <MenuItem as={"a"} href={`/users/${user.userId}`}>
                   Profile
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem>Explore</MenuItem>
                 <MenuDivider />
                 <MenuItem
@@ -135,7 +136,7 @@ export default function Navbar() {
           >
             <Button
               as={"a"}
-              fontSize={"sm"}
+              fontSize={"10pt"}
               fontWeight={400}
               variant={"link"}
               href={"/login"}
@@ -145,13 +146,14 @@ export default function Navbar() {
             <Button
               as={"a"}
               display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
+              fontSize={"10pt"}
+              borderRadius={"full"}
               fontWeight={600}
               color={"white"}
-              bg={"blue.400"}
+              bg={"blue.600"}
               href={"/register"}
               _hover={{
-                bg: "blue.300",
+                bg: "blue.700",
               }}
             >
               Register
@@ -268,7 +270,7 @@ const DesktopNav = () => {
                 as="a"
                 p={2}
                 href={navItem.href ?? "#"}
-                fontSize={"sm"}
+                fontSize={"10pt"}
                 fontWeight={500}
                 color={linkColor}
                 _hover={{

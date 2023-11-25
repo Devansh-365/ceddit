@@ -35,7 +35,7 @@
 
 ### Introducing ceddit ✌️
 
-An Open-Source Solution for Streamlining Your Social Media Links. Inspired by Linktree.
+A dynamic platform for developers: fostering collaborative learning through programming question posting and knowledge sharing.
 
 ## 🚀 Demo
 
@@ -49,7 +49,7 @@ Try the App: [ceddit](https://ceddit.vercel.app/)
 
 A dynamic platform for developers: fostering collaborative learning through programming question posting and knowledge sharing.
 
-- **Beautiful UI using TailwindCSS and ShadcnUI**
+<!-- - **Beautiful UI using TailwindCSS and ShadcnUI**
 - **User-Friendly Dashboard: An intuitive and user-friendly dashboard for easy navigation**
 - **Multiple Projects: Ability to create and manage multiple projects or profiles**
 - **Customizable Links: Create and customize links for each project profile**
@@ -61,7 +61,7 @@ A dynamic platform for developers: fostering collaborative learning through prog
 - **Full responsivity and mobile UI**
 - **ORM using Prisma**
 - **Database using Neon**
-- **Authentication with Next-Auth**
+- **Authentication with Next-Auth** -->
 
 ## 🛠️ Installation Steps
 
@@ -99,14 +99,14 @@ You are all set! Open [localhost:3000](http://localhost:3000/) to see the app.
 
 ## 💻 Built with
 
-- [React JS](https://nextjs.org/): javascript libraray
+- [React JS](https://react.dev/): javascript libraray
 - [Javascript](): language
 - [JWT Auth](https://jwt.io/): for authentication
 - [Chakra UI](https://chakra-ui.com/): for components
-- [React Icons](https://lucide.dev/icons/): for icons
-- [MongoDb](https://www.prisma.io/): for database
-- [NodeJs](https://uploadthing.com/): for backend
-- [Exprees](https://ui.shadcn.com/): for backend
+- [React Icons](https://react-icons.github.io/react-icons/): for icons
+- [MongoDb](https://www.mongodb.com/): for database
+- [NodeJs](https://nodejs.org/en/): for backend
+- [Exprees](https://expressjs.com/): for backend
 - [react-hot-toast](https://react-hot-toast.com/): for toasts
 - [Vercel](http://vercel.com/): for hosting
 

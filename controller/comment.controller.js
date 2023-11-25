@@ -196,6 +196,13 @@ const upvoteComment = async (req, res) => {
     }
 
     const hasUpvoted = comment.upvotedBy.includes(userId);
+    const hasDownvoted = comment.downvotedBy.includes(userId);
+
+    if (hasDownvoted) {
+      comment.downvotedBy = comment.downvotedBy.filter(
+        (id) => id.toString() !== userId
+      );
+    }
 
     if (hasUpvoted) {
       comment.upvotedBy = comment.upvotedBy.filter(
@@ -218,6 +225,7 @@ const upvoteComment = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 const downvoteComment = async (req, res) => {
   const commentId = req.params.commentId;

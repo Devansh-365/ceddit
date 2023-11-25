@@ -92,12 +92,13 @@ const CommentItem = ({
             <Icon as={BsChat} mr={1} />
             <Text fontSize="9pt">Reply</Text>
           </Flex>
-          {user && (
-            <>
-              <EditCommentModel comment={comment} />
-              <DeleteCommentModal comment={comment} />
-            </>
-          )}
+          {user &&
+            (user.isAdmin || user?.userId === comment?.commentedBy?._id) && (
+              <>
+                <EditCommentModel comment={comment} />
+                <DeleteCommentModal comment={comment} />
+              </>
+            )}
         </Stack>
         {replyInput && user && (
           <Flex direction="column" mb={6} fontSize="10pt" width="100%">

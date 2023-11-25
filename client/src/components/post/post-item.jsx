@@ -32,7 +32,7 @@ const PostItem = ({ post }) => {
   const user = isLoggedIn();
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
-  const singlePostView = false; // function not passed to [pid]
+  const singlePostView = false;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const isUserUpvote = (community) => {
@@ -48,23 +48,6 @@ const PostItem = ({ post }) => {
   const handleDelete = async (event) => {
     event.stopPropagation();
     setLoadingDelete(true);
-    // try {
-    //   const success = await onDeletePost(post);
-    //   if (!success) throw new Error("Failed to delete post");
-
-    //   console.log("Post successfully deleted");
-
-    //   // Could proably move this logic to onDeletePost function
-    //   if (router) router.back();
-    // } catch (error: any) {
-    //   console.log("Error deleting post", error.message);
-    //   /**
-    //    * Don't need to setLoading false if no error
-    //    * as item will be removed from DOM
-    //    */
-    //   setLoadingDelete(false);
-    //   // setError
-    // }
   };
 
   return (
@@ -229,7 +212,7 @@ const PostItem = ({ post }) => {
             <Icon as={IoBookmarkOutline} mr={2} />
             <Text fontSize="9pt">Save</Text>
           </Flex> */}
-            {user && (
+            {user && (user.isAdmin || user?.userId === post?.user?._id) && (
               <Flex
                 align="center"
                 p="8px 10px"
@@ -241,7 +224,7 @@ const PostItem = ({ post }) => {
                 <EditPostModel post={post} />
               </Flex>
             )}
-            {user && (
+            {user && (user.isAdmin || user?.userId === post?.user?._id) && (
               <Flex
                 align="center"
                 p="8px 10px"

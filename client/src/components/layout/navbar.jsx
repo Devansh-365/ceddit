@@ -20,12 +20,16 @@ import {
   Avatar,
   MenuDivider,
   Image,
+  InputGroup,
+  InputLeftElement,
+  Input,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
   CloseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  SearchIcon,
 } from "@chakra-ui/icons";
 import { GrAdd } from "react-icons/gr";
 import { isLoggedIn, logoutUser } from "../../utils/auth";
@@ -39,6 +43,12 @@ export default function Navbar() {
   function getRandomInt() {
     return Math.floor(Math.random() * (10000 - 5)) + 4;
   }
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      navigate(`/search?posts=${event.target.value}`);
+    }
+  };
 
   return (
     <Box>
@@ -67,7 +77,11 @@ export default function Navbar() {
             aria-label={"Toggle Navigation"}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+        <Flex
+          flex={{ base: 1 }}
+          align={"center"}
+          justify={{ base: "center", md: "start" }}
+        >
           <Text
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             fontFamily={"heading"}
@@ -82,6 +96,18 @@ export default function Navbar() {
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
+          </Flex>
+          <Flex display={{ base: "flex" }} ml={10}>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon color="gray.300" />
+              </InputLeftElement>
+              <Input
+                borderRadius={"full"}
+                placeholder="Search"
+                onKeyPress={handleKeyPress}
+              />
+            </InputGroup>
           </Flex>
         </Flex>
 

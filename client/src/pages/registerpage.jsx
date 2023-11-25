@@ -28,7 +28,7 @@ export const RegisterPage = () => {
     }
 
     const data = await register(form);
-    if (data.error) {
+    if (data.token) {
       toast.error("Something went wrong!");
       setFormError(data.error);
     } else {

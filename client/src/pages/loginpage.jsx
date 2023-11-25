@@ -26,13 +26,13 @@ export const LoginPage = () => {
     }
 
     const data = await login(form);
-    if (data.error) {
+    if (!data.token) {
       toast.error("Something went wrong!");
       setFormError(data.error);
     } else {
       loginUser(data);
       toast.success("Logged in successfully!");
-      navigate("/");
+      navigate("/explore");
     }
   };
 

@@ -24,10 +24,14 @@ export const DeletePostModal = ({ postId }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await deletePost(postId);
-    toast.success("Post deleted successfully!");
-    navigate(0);
-    onClose();
+    const data = await deletePost(postId);
+    if (!data.error) {
+      toast.success("Post deleted successfully!");
+      navigate(0);
+      onClose();
+    } else {
+      toast.error("Post failed to delete!");
+    }
   };
 
   return (

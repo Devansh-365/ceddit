@@ -39,10 +39,14 @@ export const EditPostModel = ({ post }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await updatePost(post?._id, form);
-    toast.success("Post updated successfully!");
-    navigate(0);
-    onClose();
+    const data = await updatePost(post?._id, form);
+    if (!data.error) {
+      toast.success("Post updated successfully!");
+      navigate(0);
+      onClose();
+    } else {
+      toast.error("Post failed to update!");
+    }
   };
 
   return (

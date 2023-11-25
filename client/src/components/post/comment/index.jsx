@@ -24,7 +24,7 @@ const Comments = ({ user, post }) => {
         setComments(data);
       });
     }
-  }, [comments]);
+  }, [post, comments]);
 
   const onCreateComment = async () => {
     const data = await createComment(post?._id, {

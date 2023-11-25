@@ -14,27 +14,31 @@ import { BsLink45Deg } from "react-icons/bs";
 import { FaReddit } from "react-icons/fa";
 import { IoImageOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { sortByLatest, sortByLikes, sortByComments } from '../../redux/sortingSlice'; 
+import { useDispatch } from "react-redux";
+import {
+  sortByLatest,
+  sortByLikes,
+  sortByComments,
+} from "../../redux/sortingSlice";
 
-export const CreatePostBtn = () => {
+export const CreatePostBtn = ({ handleSort }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const handleSort = (sortType) => {
-    switch (sortType) {
-      case 'latest':
-        dispatch(sortByLatest());
-        break;
-      case 'likes':
-        dispatch(sortByLikes());
-        break;
-      case 'comments':
-        dispatch(sortByComments());
-        break;
-      default:
-        break;
-    }}
-  
+  // const dispatch = useDispatch();
+  // const handleSort = (sortType) => {
+  //   switch (sortType) {
+  //     case 'latest':
+  //       dispatch(sortByLatest());
+  //       break;
+  //     case 'likes':
+  //       dispatch(sortByLikes());
+  //       break;
+  //     case 'comments':
+  //       dispatch(sortByComments());
+  //       break;
+  //     default:
+  //       break;
+  //   }}
+
   return (
     <Flex
       justify="space-evenly"
@@ -110,9 +114,23 @@ export const CreatePostBtn = () => {
               Sort By
             </MenuButton>
             <MenuList>
-            <MenuItem fontSize="10pt" onClick={() => handleSort('latest')}>Latest</MenuItem>
-              <MenuItem fontSize="10pt" onClick={() => handleSort('likes')}>Likes</MenuItem>
-              <MenuItem fontSize="10pt" onClick={() => handleSort('comments')}>Comments</MenuItem>
+              <MenuItem fontSize="10pt" onClick={() => handleSort("createdAt")}>
+                Latest
+              </MenuItem>
+              <MenuItem
+                fontSize="10pt"
+                as={"button"}
+                onClick={() => handleSort("upvotedBy")}
+              >
+                Likes
+              </MenuItem>
+              <MenuItem
+                fontSize="10pt"
+                as={"button"}
+                onClick={() => handleSort("commentCount")}
+              >
+                Comments
+              </MenuItem>
             </MenuList>
           </>
         )}

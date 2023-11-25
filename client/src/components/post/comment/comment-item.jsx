@@ -12,14 +12,20 @@ import moment from "moment";
 import { FaConnectdevelop, FaReddit } from "react-icons/fa";
 import {
   IoArrowDownCircleOutline,
+  IoArrowDownCircleSharp,
   IoArrowUpCircleOutline,
+  IoArrowUpCircleSharp,
 } from "react-icons/io5";
 import { isLoggedIn } from "../../../utils/auth";
 import { DeleteCommentModal } from "../../modals/delete-comment-modal";
 import { EditCommentModel } from "../../modals/edit-comment-modal";
 import { BsChat } from "react-icons/bs";
 import CommentInput from "./comment-input";
-import { createComment } from "../../../api/comment";
+import {
+  createComment,
+  downvoteComment,
+  upvoteComment,
+} from "../../../api/comment";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -35,6 +41,16 @@ const CommentItem = ({
   const [replyComment, setReplyComment] = useState("");
 
   const navigate = useNavigate();
+
+  const isUserUpvote = (community) => {
+    if (!user) return false;
+    if (comment?.upvotedBy?.includes(user.userId)) return true;
+  };
+
+  const isUserDownvote = (community) => {
+    if (!user) return false;
+    if (comment?.downvotedBy?.includes(user.userId)) return true;
+  };
 
   const onCreateReplyComment = async () => {
     const data = await createComment(comment?.post, {
@@ -82,8 +98,26 @@ const CommentItem = ({
           fontWeight={600}
           color="gray.500"
         >
-          <Icon as={IoArrowUpCircleOutline} />
-          <Icon as={IoArrowDownCircleOutline} />
+          <Icon
+            as={isUserUpvote() ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
+            color={isUserUpvote() ? "brand.100" : "gray.400"}
+            cursor="pointer"
+            onClick={() => upvoteComment(comment._id)}
+          />
+          <Text fontSize="9pt" fontWeight={600}>
+            {comment?.upvotedBy?.length - comment?.downvotedBy?.length}
+          </Text>
+          <Icon
+            as={
+              isUserDownvote()
+                ? IoArrowDownCircleSharp
+                : IoArrowDownCircleOutline
+            }
+            color={isUserDownvote() ? "#4379FF" : "gray.400"}
+            fontSize={22}
+            cursor="pointer"
+            onClick={() => downvoteComment(comment._id)}
+          />
           <Flex
             as={"button"}
             onClick={() => setReplyInput(!replyInput)}

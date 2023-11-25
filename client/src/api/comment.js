@@ -71,4 +71,51 @@ const getPostComments = async (postId) => {
   }
 };
 
-export { getPostComments, createComment, updateComment, deleteComment };
+const upvoteComment = async (commentId) => {
+  try {
+    const user = isLoggedIn();
+    if (!user) {
+      return new Error("User not logged in");
+    }
+    const res = await fetch(BASE_URL + `api/comment/${commentId}/upvote`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": user.token,
+      },
+    });
+    return await res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const downvoteComment = async (commentId) => {
+  try {
+    const user = isLoggedIn();
+    if (!user) {
+      return new Error("User not logged in");
+    }
+    const res = await fetch(BASE_URL + `api/comment/${commentId}/downvote`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": user.token,
+      },
+    });
+    return await res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export {
+  getPostComments,
+  createComment,
+  updateComment,
+  deleteComment,
+  upvoteComment,
+  downvoteComment,
+};

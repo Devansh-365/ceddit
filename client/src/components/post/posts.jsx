@@ -4,15 +4,7 @@ import { Stack } from "@chakra-ui/react";
 import PostItem from "./post-item";
 import { getPosts } from "../../api/posts";
 
-export const Posts = () => {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    getPosts().then((data) => {
-      setPosts(data);
-    });
-  }, [posts]);
-
+export const Posts = ({ posts }) => {
   return (
     <>
       {posts.length === 0 ? (

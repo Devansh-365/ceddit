@@ -43,7 +43,7 @@ A dynamic platform for developers: fostering collaborative learning through prog
 <!-- <img src="public/sc.png" /> -->
 </a>
 
-Try the App: [ceddit](https://ceddit.vercel.app/)
+Try the App: [ceddit](https://ceddit-one.vercel.app/)
 
 ## 🧐 Features
 
@@ -108,6 +108,7 @@ You are all set! Open [localhost:3000](http://localhost:3000/) to see the app.
 - [NodeJs](https://nodejs.org/en/): for backend
 - [Exprees](https://expressjs.com/): for backend
 - [react-hot-toast](https://react-hot-toast.com/): for toasts
+- [Docker](https://www.docker.com/)
 - [Vercel](http://vercel.com/): for hosting
 
 ## 🛡️ License

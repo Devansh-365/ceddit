@@ -63,7 +63,7 @@ export const Homepage = () => {
               with Collaborative Learning
             </Text>
           </Heading>
-          <Text color={"gray.500"} w={"600px"} mx={"auto"}>
+          <Text color={"gray.500"} mx={"auto"}>
             A Dynamic Platform for Developers: Fostering Collaborative Learning
             through Programming Question Posting and Knowledge Sharing{" "}
           </Text>

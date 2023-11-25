@@ -37,14 +37,27 @@ const getCommunityPosts = async (req, res) => {
   const communityId = req.params.id;
 
   try {
-    const community = await Community.findById(communityId).populate("posts");
+    const community = await Community.findById(communityId)
+      .populate({
+        path: "posts",
+        populate: {
+          path: "user",
+          model: "user",
+        },
+      })
+      .populate({
+        path: "posts",
+        populate: {
+          path: "community",
+          model: "community",
+        },
+      });
 
     if (!community) {
       return res.status(404).json({ error: "Community not found" });
     }
 
     return res.json({ community });
-  
   } catch (error) {
     console.error(`Error getting community posts: ${error.message}`);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -53,7 +66,6 @@ const getCommunityPosts = async (req, res) => {
 
 const getAllCommunities = async (req, res) => {
   try {
-    
     const communities = await Community.find();
 
     return res.json({ communities });
@@ -64,7 +76,7 @@ const getAllCommunities = async (req, res) => {
 };
 
 const subscribedToCommunity = async (req, res) => {
-  const userId = req.user.userId; 
+  const userId = req.user.userId;
   const communityId = req.params.id;
 
   try {
@@ -74,21 +86,22 @@ const subscribedToCommunity = async (req, res) => {
       return res.status(404).json({ error: "Community not found" });
     }
 
-    
     const isSubscribed = community.subscribedBy.includes(userId);
 
     if (isSubscribed) {
-      community.subscribedBy = community.subscribedBy.filter((id) => id.toString() !== userId);
+      community.subscribedBy = community.subscribedBy.filter(
+        (id) => id.toString() !== userId
+      );
       community.subscriberCount -= 1;
       await community.save();
-      return res.status(200).json({ message: "Successfully unsubscribed from the community" });
+      return res
+        .status(200)
+        .json({ message: "Successfully unsubscribed from the community" });
     }
-
 
     community.subscribedBy.push(userId);
     community.subscriberCount += 1;
 
-    
     await community.save();
 
     return res
@@ -101,7 +114,6 @@ const subscribedToCommunity = async (req, res) => {
 };
 const getTop10 = async (req, res) => {
   try {
-    
     const topCommunities = await Community.find()
       .sort({ subscriberCount: -1 })
       .limit(10);
@@ -116,23 +128,19 @@ const deleteCommunity = async (req, res) => {
   const communityId = req.params.id;
 
   try {
-    
     const community = await Community.findById(communityId);
 
     if (!community) {
       return res.status(404).json({ error: "Community not found" });
     }
 
-    
-    const userId = req.user.userId; 
+    const userId = req.user.userId;
     const isAdmin = req.user.isAdmin;
-    if (community.admin.toString() !== userId &&
-    !isAdmin ) {
+    if (community.admin.toString() !== userId && !isAdmin) {
       return res.status(403).json({
         error: "Permission denied - You are not the admin of this community",
       });
     }
-
 
     await Community.deleteOne({ _id: communityId });
 
@@ -148,24 +156,21 @@ const updatedCommunity = async (req, res) => {
   const { name, bio } = req.body;
 
   try {
-    
     const community = await Community.findById(communityId);
 
     if (!community) {
       return res.status(404).json({ error: "Community not found" });
     }
 
-   
-    const userId = req.user.userId; 
+    const userId = req.user.userId;
     if (community.admin.toString() !== userId) {
       return res.status(403).json({
         error: "Permission denied - You are not the admin of this community",
       });
     }
 
-    
-    community.name = name || community.name; 
-    community.bio = bio || community.bio; 
+    community.name = name || community.name;
+    community.bio = bio || community.bio;
 
     await community.save();
 

@@ -34,7 +34,10 @@ const createPost = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate("user").populate("community");
+    const posts = await Post.find()
+      .sort({ createdAt: -1 })
+      .populate("user")
+      .populate("community");
 
     res.json(posts);
   } catch (error) {
@@ -42,6 +45,7 @@ const getPosts = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 const getPostById = async (req, res) => {
   const postId = req.params.id;
 

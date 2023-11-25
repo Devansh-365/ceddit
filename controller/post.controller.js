@@ -118,7 +118,6 @@ const updatePost = async (req, res) => {
 
 const searchPosts = async (req, res) => {
   const query = req.query.posts;
-
   try {
     const posts = await Post.find({
       $or: [
@@ -128,7 +127,6 @@ const searchPosts = async (req, res) => {
     })
       .populate("user")
       .populate("community");
-
     res.json(posts);
   } catch (error) {
     console.error(error);

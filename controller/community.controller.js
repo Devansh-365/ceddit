@@ -129,7 +129,8 @@ const deleteCommunity = async (req, res) => {
 
   try {
     const community = await Community.findById(communityId);
-
+    const posts =await Post.find({ community:communityId})
+console.log(posts)
     if (!community) {
       return res.status(404).json({ error: "Community not found" });
     }
@@ -143,7 +144,7 @@ const deleteCommunity = async (req, res) => {
     }
 
     await Community.deleteOne({ _id: communityId });
-
+    await Post.deleteMany({ community: communityId });
     return res.status(200).json({ message: "Community deleted successfully" });
   } catch (error) {
     console.error(`Error deleting community: ${error.message}`);

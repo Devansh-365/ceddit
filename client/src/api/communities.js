@@ -63,9 +63,50 @@ const onJoinLeaveCommunity = async (communityId, user) => {
   }
 };
 
+const updateCommunity = async (communityId, data) => {
+  try {
+    const user = isLoggedIn();
+    if (!user) {
+      return new Error("User not logged in");
+    }
+    const res = await fetch(BASE_URL + "api/communities/" + communityId, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": user.token,
+      },
+      body: JSON.stringify(data),
+    });
+    return await res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteCommunity = async (communityId) => {
+  try {
+    const user = isLoggedIn();
+    if (!user) {
+      return new Error("User not logged in");
+    }
+    const res = await fetch(BASE_URL + "api/communities/" + communityId, {
+      method: "DELETE",
+      headers: {
+        "x-access-token": user.token,
+      },
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export {
   createCommunity,
   getCommunities,
   getCommunityPosts,
   onJoinLeaveCommunity,
+  updateCommunity,
+  deleteCommunity,
 };

@@ -137,11 +137,11 @@ console.log(posts)
 
     const userId = req.user.userId;
     const isAdmin = req.user.isAdmin;
-    if (community.admin.toString() !== userId && !isAdmin) {
-      return res.status(403).json({
-        error: "Permission denied - You are not the admin of this community",
-      });
-    }
+    // if (community.admin.toString() !== userId && !isAdmin) {
+    //   return res.status(403).json({
+    //     error: "Permission denied - You are not the admin of this community",
+    //   });
+    // }
 
     await Community.deleteOne({ _id: communityId });
     await Post.deleteMany({ community: communityId });
@@ -164,11 +164,11 @@ const updatedCommunity = async (req, res) => {
     }
 
     const userId = req.user.userId;
-    if (community.admin.toString() !== userId) {
-      return res.status(403).json({
-        error: "Permission denied - You are not the admin of this community",
-      });
-    }
+    // if (community.admin.toString() !== userId) {
+    //   return res.status(403).json({
+    //     error: "Permission denied - You are not the admin of this community",
+    //   });
+    // }
 
     community.name = name || community.name;
     community.bio = bio || community.bio;

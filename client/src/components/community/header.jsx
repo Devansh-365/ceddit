@@ -1,9 +1,11 @@
 import React from "react";
 import { Box, Button, Flex, Icon, Text, Image } from "@chakra-ui/react";
-import { FaReddit } from "react-icons/fa";
+import { FaConnectdevelop, FaReddit } from "react-icons/fa";
 import { isLoggedIn } from "../../utils/auth";
 import { onJoinLeaveCommunity } from "../../api/communities";
 import { useNavigate } from "react-router-dom";
+import { DeleteCommunityModal } from "../modals/delete-community-modal";
+import { EditCommunityModel } from "../modals/edit-community-modal";
 
 const Header = ({ community }) => {
   const user = isLoggedIn();
@@ -44,7 +46,7 @@ const Header = ({ community }) => {
             />
           ) : (
             <Icon
-              as={FaReddit}
+              as={FaConnectdevelop}
               fontSize={64}
               position="relative"
               top={-3}
@@ -56,11 +58,18 @@ const Header = ({ community }) => {
           <Flex padding="10px 16px">
             <Flex direction="column" mr={6}>
               <Text fontWeight={800} fontSize="16pt">
-                {community.name}
+                {community?.name}
               </Text>
-              <Text fontWeight={600} fontSize="10pt" color="gray.400">
-                r/sdsd
-              </Text>
+              <Flex gap={3}>
+                {user &&
+                  (user.isAdmin || user?.userId === community?.admin) && (
+                    <EditCommunityModel community={community} />
+                  )}
+                {user &&
+                  (user.isAdmin || user?.userId === community?.admin) && (
+                    <DeleteCommunityModal communityId={community?._id} />
+                  )}
+              </Flex>
             </Flex>
             <Flex>
               <Button

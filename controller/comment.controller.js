@@ -1,7 +1,7 @@
 const Comment = require("../model/comment.model");
 const Post = require("../model/post.model");
 
-const writeCommentForPost = async (req, res) => {
+const createComment = async (req, res) => {
   try {
     const { content, parentId } = req.body;
     const postId = req.params.postId;
@@ -21,9 +21,11 @@ const writeCommentForPost = async (req, res) => {
       post: postId,
       commentedBy: userId,
     });
+
     await comment.save();
     post.commentCount += 1;
     await post.save();
+
     await Comment.populate(comment, {
       path: "commentedBy",
       select: "-password",
@@ -51,10 +53,12 @@ const getPostComments = async (req, res) => {
 
     let commentParents = {};
     let rootComments = [];
+
     for (let i = 0; i < comments.length; i++) {
       let comment = comments[i];
       commentParents[comment._id] = comment;
     }
+
     for (let i = 0; i < comments.length; i++) {
       const comment = comments[i];
       if (comment.parent) {
@@ -68,6 +72,7 @@ const getPostComments = async (req, res) => {
         rootComments = [...rootComments, comment];
       }
     }
+
     return res.status(200).json(rootComments);
   } catch (err) {
     console.error(err);
@@ -116,31 +121,32 @@ const addReply = async (req, res) => {
       .json({ message: " could not save comment", error: err.message });
   }
 };
+
 const updateCommentForPost = async (req, res) => {
   try {
     const { content } = req.body;
     const userId = req.user.userId;
-
-    const postId = req.params.postId;
     const commentId = req.params.id;
-    const comment = await Comment.findById(commentId).populate("commentedBy");
+    const comment = await Comment.findById(commentId).populate('commentedBy');
+
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    // if (comment.commentedBy.toString() !== userId && !req.user.isAdmin) {
-    //   return res.status(401).json({ message: "Access is denied." });
-    // }
+  
+
+    if (!comment.commentedBy || comment.commentedBy._id.toString() !== userId.toString()) {
+      return res.status(401).json({ message: "Access is denied." });
+    }
 
     comment.content = content;
-    await comment.save();
+    comment.save();
 
     res.status(200).json({ message: "Comment updated successfully", comment });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error", error });
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
-};
+}
 
 const deleteCommentForPost = async (req, res) => {
   try {
@@ -148,35 +154,116 @@ const deleteCommentForPost = async (req, res) => {
     const isAdmin = req.user.isAdmin;
     const postId = req.params.postId;
     const commentId = req.params.id;
-    const comment = await Comment.findById(commentId);
 
+    const post = await Post.findById(postId);
+    console.log(isAdmin)
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    const comment = await Comment.findById(commentId).populate('commentedBy');
     if (!comment) {
-      throw new Error("Comment not found");
+      return res.status(404).json({ message: "Comment not found" });
     }
 
-    // if (comment.commentedBy != userId && !isAdmin) {
-    //   throw new Error("Not authorized to delete comment");
-    // }
-
+    if (comment.commentedBy._id.toString() === userId || isAdmin ) {
+      await Comment.deleteOne({ _id: commentId });
+    }
+    else{
+      return res.status(401).json({ message: "Access is denied." });
+    }
     await Comment.deleteOne({ _id: commentId });
-
-    const post = await Post.findById(comment.post);
-
-    post.commentCount = (await Comment.find({ post: post._id })).length;
+    post.commentCount -= 1;
 
     await post.save();
 
-    return res.status(200).json(comment);
+    res.status(200).json({ message: "Comment deleted successfully", comment });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 
+const upvoteComment = async (req, res) => {
+  const commentId = req.params.commentId;
+  const userId = req.user.userId;
+
+  try {
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const hasUpvoted = comment.upvotedBy.includes(userId);
+
+    if (hasUpvoted) {
+      comment.upvotedBy = comment.upvotedBy.filter(
+        (id) => id.toString() !== userId
+      );
+      await comment.save();
+      return res
+        .status(200)
+        .json({ message: "Successfully removed upvote from the comment" });
+    }
+
+    comment.upvotedBy.push(userId);
+    await comment.save();
+
+    return res
+      .status(200)
+      .json({ message: "Successfully upvoted the comment" });
+  } catch (error) {
+    console.error(`Error upvoting comment: ${error.message}`);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const downvoteComment = async (req, res) => {
+  const commentId = req.params.commentId;
+  const userId = req.user.userId;
+
+  try {
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      return res.status(404).json({ error: "comment not found" });
+    }
+
+    const hasUpvoted = comment.upvotedBy.includes(userId);
+    const hasDownvoted = comment.downvotedBy.includes(userId);
+
+    if (hasUpvoted) {
+      comment.upvotedBy = comment.upvotedBy.filter(
+        (id) => id.toString() !== userId
+      );
+    }
+
+    if (hasDownvoted) {
+      comment.downvotedBy = comment.downvotedBy.filter(
+        (id) => id.toString() !== userId
+      );
+    } else {
+      comment.downvotedBy.push(userId);
+    }
+
+    await comment.save();
+
+    return res
+      .status(200)
+      .json({ message: "Successfully downvoted the comment" });
+  } catch (error) {
+    console.error(`Error downvoting comment: ${error.message}`);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
-  writeCommentForPost,
+  createComment,
   getPostComments,
   addReply,
   updateCommentForPost,
   deleteCommentForPost,
+  upvoteComment,
+  downvoteComment,
 };

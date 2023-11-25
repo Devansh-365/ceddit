@@ -98,7 +98,9 @@ const updatePost = async (req, res) => {
 
       await post.save();
 
-      return res.status(200).json({ message: "Post updated successfully", post });
+      return res
+        .status(200)
+        .json({ message: "Post updated successfully", post });
     } else {
       return res.status(403).json({ message: "Permission denied" });
     }
@@ -111,7 +113,7 @@ const updatePost = async (req, res) => {
 };
 
 const searchPosts = async (req, res) => {
-  const query = req.query.q;
+  const query = req.query.posts;
 
   try {
     const posts = await Post.find({
@@ -131,6 +133,7 @@ const searchPosts = async (req, res) => {
       .json({ message: "Internal Server Error", error: error.message });
   }
 };
+
 const upvotePost = async (req, res) => {
   const postId = req.params.postId;
   const userId = req.user.userId;
@@ -145,26 +148,26 @@ const upvotePost = async (req, res) => {
     const hasUpvoted = post.upvotedBy.includes(userId);
     const hasDownvoted = post.downvotedBy.includes(userId);
 
-    
     if (hasDownvoted) {
       post.downvotedBy = post.downvotedBy.filter(
         (id) => id.toString() !== userId
       );
     }
 
-
     if (hasUpvoted) {
       post.upvotedBy = post.upvotedBy.filter((id) => id.toString() !== userId);
       await post.save();
       return res
         .status(200)
-        .json({ message: "Successfully removed upvote from the post" , post});
+        .json({ message: "Successfully removed upvote from the post", post });
     }
 
     post.upvotedBy.push(userId);
     await post.save();
 
-    return res.status(200).json({ message: "Successfully upvoted the post",post });
+    return res
+      .status(200)
+      .json({ message: "Successfully upvoted the post", post });
   } catch (error) {
     console.error(`Error upvoting post: ${error.message}`);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -199,7 +202,9 @@ const downvotePost = async (req, res) => {
 
     await post.save();
 
-    return res.status(200).json({ message: "Successfully downvoted the post" ,post});
+    return res
+      .status(200)
+      .json({ message: "Successfully downvoted the post", post });
   } catch (error) {
     console.error(`Error downvoting post: ${error.message}`);
     return res.status(500).json({ error: "Internal Server Error" });

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://ceddit.vercel.app/">
+  <a href="https://ceddit-one.vercel.app/">
     <img alt="ceddit" src="./client/public/logo192.png" width="125" />
   </a>
 </p>
@@ -26,7 +26,7 @@
 <!-- <p align="center"><img src="public/sc.png" alt="ceddit sc" width="550" /></p> -->
 
 <p align="center">
-    <a href="https://ceddit.vercel.app/" target="blank">View Demo</a>
+    <a href="https://ceddit-one.vercel.app/" target="blank">View Demo</a>
     ·
     <a href="https://github.com/Devansh-365/ceddit/issues/new/choose">Report Bug</a>
     ·
@@ -39,7 +39,7 @@ A dynamic platform for developers: fostering collaborative learning through prog
 
 ## 🚀 Demo
 
-<a href="https://ceddit.vercel.app/" target="blank">
+<a href="https://ceddit-one.vercel.app/" target="blank">
 <!-- <img src="public/sc.png" /> -->
 </a>
 

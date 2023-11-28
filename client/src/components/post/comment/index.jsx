@@ -16,12 +16,14 @@ import { useNavigate } from "react-router-dom";
 const Comments = ({ user, post }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
 
   useEffect(() => {
     if (post?._id) {
       getPostComments(post?._id).then((data) => {
         setComments(data);
+        setLoading(false)
       });
     }
   }, [post, comments]);
@@ -50,7 +52,7 @@ const Comments = ({ user, post }) => {
         />
       </Flex>
       <Stack spacing={6} py={2}>
-        {!comments ? (
+        {loading ? (
           <>
             {[0, 1, 2].map((item) => (
               <Box key={item} padding="6" bg="white">

@@ -56,7 +56,7 @@ export const TopCommunities = () => {
         Explore Communities
       </Flex>
       <Flex direction="column">
-        {!communities ? (
+        {communities.length === 0 ? (
           <Stack mt={2} p={3}>
             <Flex justify="space-between" align="center">
               <SkeletonCircle size="10" />

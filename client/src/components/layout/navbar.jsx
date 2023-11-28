@@ -23,6 +23,8 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
+  Tooltip,
+  HStack,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -34,6 +36,7 @@ import {
 import { GrAdd } from "react-icons/gr";
 import { isLoggedIn, logoutUser } from "../../utils/auth";
 import { useNavigate } from "react-router-dom";
+import { BsChat } from "react-icons/bs";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -115,9 +118,15 @@ export default function Navbar() {
           <Stack
             flex={{ base: 1, md: 0 }}
             justify={"flex-end"}
+            align={"center"}
             direction={"row"}
             spacing={6}
           >
+            {/* <HStack spacing={6} position="relative">
+              <Tooltip label="Hover me">
+                <Icon as={BsChat} boxSize={5} color="gray.500" />
+              </Tooltip>
+            </HStack> */}
             <Menu>
               <MenuButton
                 as={Button}
@@ -129,9 +138,7 @@ export default function Navbar() {
                 <Avatar
                   size={"sm"}
                   src={
-                    "http://graph.facebook.com/v2.5/" +
-                    getRandomInt() +
-                    "/picture?height=200&height=200"
+                    "./user.gif"
                   }
                 />
               </MenuButton>

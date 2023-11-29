@@ -49,19 +49,15 @@ Try the App: [ceddit](https://ceddit-one.vercel.app/)
 
 A dynamic platform for developers: fostering collaborative learning through programming question posting and knowledge sharing.
 
-<!-- - **Beautiful UI using TailwindCSS and ShadcnUI**
-- **User-Friendly Dashboard: An intuitive and user-friendly dashboard for easy navigation**
-- **Multiple Projects: Ability to create and manage multiple projects or profiles**
-- **Customizable Links: Create and customize links for each project profile**
-- **Unique Project URLs: Each project gets a unique URL for sharing**
-- **Unique Project URLs: Each project gets a unique URL for sharing**
-- **Rich Media Support: Add links to websites, social profiles, articles, and more**
-- **Shareable Links: Share project URLs on social media, websites, or anywhere else**
-- **Feedback and Support: Easy access to user support and feedback**
+- **Beautiful UI using TailwindCSS and ChakraUI**
+- **User Authentication: Users can authenticate using their email**
+- **Community Creation: Users can create their own communities**
+- **Posting: Users can create posts within their communities**
+- **Post Viewing & Sorting: Users can view posts and sort them by time, likes, and comments**
+- **Voting: Users can upvote and downvote posts and comments**
+- **Commenting: Users can comment on posts and their own comments**
+- **Skeleton Loading: Implement skeleton loading feature for better user experience**
 - **Full responsivity and mobile UI**
-- **ORM using Prisma**
-- **Database using Neon**
-- **Authentication with Next-Auth** -->
 
 ## 🛠️ Installation Steps
 

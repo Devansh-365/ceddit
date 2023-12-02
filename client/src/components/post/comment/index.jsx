@@ -16,17 +16,17 @@ import { useNavigate } from "react-router-dom";
 const Comments = ({ user, post }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (post?._id) {
       getPostComments(post?._id).then((data) => {
         setComments(data);
-        setLoading(false)
+        setLoading(false);
       });
     }
-  }, [post, comments]);
+  }, [post]);
 
   const onCreateComment = async () => {
     const data = await createComment(post?._id, {

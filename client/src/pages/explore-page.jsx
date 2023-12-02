@@ -55,7 +55,7 @@ export const ExplorePage = () => {
       }
       setPosts(sortedPosts);
     });
-  }, [sortType, posts]);
+  }, [sortType]);
 
   return (
     <Layout>

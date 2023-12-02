@@ -28,7 +28,7 @@ export const TopCommunities = () => {
     getCommunities().then((data) => {
       setCommunities(data.communities);
     });
-  }, [communities]);
+  }, []);
 
   return (
     <Flex

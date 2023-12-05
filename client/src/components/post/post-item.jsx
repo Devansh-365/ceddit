@@ -27,6 +27,7 @@ import { downvotePost, upvotePost } from "../../api/posts";
 import moment from "moment";
 import { DeletePostModal } from "../modals/delete-post";
 import { EditPostModel } from "../modals/edit-post-model";
+import { socket } from "../../utils/socket";
 
 const PostItem = ({ post }) => {
   const user = isLoggedIn();
@@ -73,7 +74,9 @@ const PostItem = ({ post }) => {
             color={isUserUpvote() ? "brand.100" : "gray.400"}
             fontSize={22}
             cursor="pointer"
-            onClick={() => upvotePost(post._id, user)}
+            onClick={() => {
+              upvotePost(post._id, user);
+            }}
           />
           <Text fontSize="9pt" fontWeight={600}>
             {post ? post?.upvotedBy?.length : 0}
@@ -87,7 +90,9 @@ const PostItem = ({ post }) => {
             color={isUserDownvote() ? "#4379FF" : "gray.400"}
             fontSize={22}
             cursor="pointer"
-            onClick={() => downvotePost(post._id, user)}
+            onClick={() => {
+              downvotePost(post._id, user);
+            }}
           />
         </Flex>
         <Flex direction="column" width="100%">

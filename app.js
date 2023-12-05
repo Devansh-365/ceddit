@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const http = require("http");
 const app = express();
 const dotenv = require("dotenv");
 const connect = require("./utils/connect");
@@ -8,6 +9,7 @@ const posts = require("./routes/post.route");
 const community = require("./routes/community.route");
 const comment = require("./routes/comment.route");
 const bodyParser = require("body-parser");
+const socketIo = require("socket.io");
 
 dotenv.config();
 
@@ -22,13 +24,36 @@ app.use(
 );
 
 const port = process.env.PORT || 4000;
-
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: true,
+    methods: ["GET", "POST"],
+  },
+  transports: ["websocket", "polling"],
+});
 app.use("/api/auth", users);
 app.use("/api/posts", posts);
 app.use("/api/communities", community);
 app.use("/api/comment", comment);
 
-app.listen(port, () => {
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("upvotePost", (postId) => {
+    io.emit("postUpdated", postId);
+  });
+
+  socket.on("downvotePost", (postId) => {
+    io.emit("postUpdated", postId);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
+server.listen(port, () => {
   console.log(`App started at http://localhost:${port}`);
   connect();
 });

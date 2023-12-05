@@ -1,5 +1,6 @@
 import { BASE_URL } from "../config";
 import { isLoggedIn } from "../utils/auth";
+import { socket } from "../utils/socket";
 
 const createPost = async (post) => {
   try {
@@ -24,8 +25,9 @@ const createPost = async (post) => {
 
 const getPosts = async () => {
   try {
-    const res = await fetch(BASE_URL + "api/posts");
-    return await res.json();
+    const res = await fetch("http://localhost:4000/api/posts");
+    const data = await res.json();
+    return data;
   } catch (err) {
     console.log(err);
   }
@@ -42,6 +44,7 @@ const getPost = async (postId) => {
 
 const upvotePost = async (postId, user) => {
   try {
+    socket.emit("upvotePost", postId);
     const res = await fetch(BASE_URL + `api/posts/${postId}/upvote`, {
       method: "POST",
       headers: {
@@ -97,6 +100,7 @@ const deletePost = async (postId) => {
 
 const downvotePost = async (postId, user) => {
   try {
+    socket.emit("downvotePost", postId);
     const res = await fetch(BASE_URL + `api/posts/${postId}/downvote`, {
       method: "POST",
       headers: {

@@ -8,7 +8,8 @@ import usePageMeta from "../utils/meta";
 import { SidePostCommunity } from "../components/community/side-post-community";
 import { Stack } from "@chakra-ui/react";
 import { isLoggedIn } from "../utils/auth";
-import { getPosts } from "../api/posts";
+import { getPost, getPosts } from "../api/posts";
+import { socket } from "../utils/socket";
 
 export const ExplorePage = () => {
   const user = isLoggedIn();
@@ -54,8 +55,25 @@ export const ExplorePage = () => {
           sortedPosts = data;
       }
       setPosts(sortedPosts);
+      socket.emit("postUpdated");
     });
-  }, [sortType]);
+  }, [sortType, socket]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("postUpdated", async (postId) => {
+        const updatedPost = await getPost(postId);
+        const updatedPosts = posts.map((post) =>
+          post._id === postId ? updatedPost : post
+        );
+        setPosts(updatedPosts);
+      });
+
+      return () => {
+        socket.off("postUpdated");
+      };
+    }
+  }, [sortType, socket, posts]);
 
   return (
     <Layout>

@@ -20,14 +20,17 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { createCommunity, getCommunities } from "../../api/communities";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaConnectdevelop } from "react-icons/fa";
 import InputItem from "../ui/input";
 import toast from "react-hot-toast";
+import { isLoggedIn } from "../../utils/auth";
 
 export const SidePostCommunity = () => {
   const [communities, setCommunities] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+  const user = isLoggedIn();
 
   const [form, setForm] = useState({
     name: "",
@@ -109,7 +112,11 @@ export const SidePostCommunity = () => {
               }}
               fontSize={"10pt"}
               onClick={() => {
-                onOpen();
+                if (user) {
+                  onOpen();
+                } else {
+                  navigate("/login");
+                }
               }}
             >
               Create Community

@@ -19,7 +19,7 @@ const ImageUpload = ({
 
     if (files && files.length > 0) {
       const file = files[0];
-      const preset = "caxbcy1y"; // Replace with your Cloudinary upload preset
+      const preset = "caxbcy1y"; 
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", preset);

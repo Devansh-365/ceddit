@@ -57,19 +57,7 @@ export const PostForm = () => {
     }));
   };
 
-  const onSelectImage = (event) => {
-    const reader = new FileReader();
-    if (event.target.files?.[0]) {
-      reader.readAsDataURL(event.target.files[0]);
-    }
-
-    reader.onload = (readerEvent) => {
-      if (readerEvent.target?.result) {
-        setSelectedFile(readerEvent.target?.result);
-      }
-    };
-  };
-
+ 
   const handleCreatePost = async () => {
     const data = await createPost({
       title: textInputs.title,
@@ -135,7 +123,6 @@ export const PostForm = () => {
               setSelectedFile={setSelectedFile}
               setSelectedTab={setSelectedTab}
               selectFileRef={selectFileRef}
-              onSelectImage={onSelectImage}
             />
           )}
         </Flex>

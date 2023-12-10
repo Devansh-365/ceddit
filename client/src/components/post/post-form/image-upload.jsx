@@ -66,7 +66,7 @@ const ImageUpload = ({
 
     return "";
   };
-console.log(generateImageUrl())
+
   return (
     <Flex direction="column" justify="center" align="center" width="100%">
       {selectedFile ? (

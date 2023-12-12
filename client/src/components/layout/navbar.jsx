@@ -100,14 +100,19 @@ export default function Navbar() {
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
           </Flex>
-          <Flex display={{ base: "flex" }} ml={10}>
+          <Flex
+            w={{ base: "100%", md: "auto" }}
+            minW={{ base: "180px", md: "240px" }}
+            display={{ base: "flex" }}
+            ml={10}
+          >
             <InputGroup>
               <InputLeftElement pointerEvents="none">
                 <SearchIcon color="gray.300" />
               </InputLeftElement>
               <Input
                 borderRadius={"full"}
-                placeholder="Search"
+                placeholder="Search Posts"
                 onKeyPress={handleKeyPress}
               />
             </InputGroup>
@@ -135,12 +140,7 @@ export default function Navbar() {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "./user.gif"
-                  }
-                />
+                <Avatar size={"sm"} src={"./user.gif"} />
               </MenuButton>
               <MenuList fontSize={"10pt"}>
                 {/* <MenuItem as={"a"} href={`/users/${user.userId}`}>

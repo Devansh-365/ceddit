@@ -41,6 +41,15 @@ const getUser = async (params) => {
   }
 };
 
+const getGoogleUser = async (params) => {
+  try {
+    const res = await fetch(BASE_URL + "api/auth/google/callback");
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const updateUser = async (user, data) => {
   try {
     const res = await fetch(BASE_URL + "api/users/" + user._id, {
@@ -58,4 +67,4 @@ const updateUser = async (user, data) => {
   }
 };
 
-export { register, login, getUser, updateUser };
+export { register, login, getUser, updateUser, getGoogleUser };

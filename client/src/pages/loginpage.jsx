@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout } from "../components/layout";
 import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import InputItem from "../components/ui/input";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import usePageMeta from "../utils/meta";
 import { loginUser } from "../utils/auth";
 import toast from "react-hot-toast";
+import { BASE_URL } from "../config";
 
 export const LoginPage = () => {
   usePageMeta("Ceddit | Login");
@@ -41,6 +42,10 @@ export const LoginPage = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const googleAuth = () => {
+    window.open(`${BASE_URL}api/auth/google/callback`, "_self");
   };
 
   return (
@@ -93,6 +98,16 @@ export const LoginPage = () => {
             </Text>
           </Flex>
         </form>
+        <Button
+          width="100%"
+          height="36px"
+          mb={2}
+          mt={2}
+          onClick={googleAuth}
+          //   isLoading={loading}
+        >
+          Log In with Google
+        </Button>
       </Container>
     </Layout>
   );

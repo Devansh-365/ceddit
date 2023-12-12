@@ -10,6 +10,8 @@ const community = require("./routes/community.route");
 const comment = require("./routes/comment.route");
 const bodyParser = require("body-parser");
 const socketIo = require("socket.io");
+const passport = require("passport");
+const passportStrategy = require("./passport");
 
 dotenv.config();
 
@@ -22,6 +24,15 @@ app.use(
     origin: true,
   })
 );
+app.use(
+  require("express-session")({
+    secret: "keyboard cat",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 const port = process.env.PORT || 4000;
 const server = http.createServer(app);

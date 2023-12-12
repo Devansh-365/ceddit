@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { Homepage } from "./pages/homepage";
 import { LoginPage } from "./pages/loginpage";
 import { RegisterPage } from "./pages/registerpage";
@@ -11,9 +11,21 @@ import { Provider } from "react-redux";
 import SearchPage from "./pages/search-page";
 import store from "./redux/store";
 import { initiateSocketConnection } from "./utils/socket";
+import { useEffect } from "react";
+import { loginUser } from "./utils/auth";
 
 function App() {
   initiateSocketConnection();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.startsWith("#user=")) {
+      const user = JSON.parse(decodeURIComponent(hash.slice(6)));
+      loginUser(user);
+      navigate("/explore");
+    }
+  }, []);
+
   return (
     <>
       <Provider store={store}>

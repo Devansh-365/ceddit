@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import usePageMeta from "../utils/meta";
 import { loginUser } from "../utils/auth";
 import toast from "react-hot-toast";
+import { BASE_URL } from "../config";
 
 export const RegisterPage = () => {
   usePageMeta("Ceddit | Register");
@@ -43,6 +44,10 @@ export const RegisterPage = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const googleAuth = () => {
+    window.open(`${BASE_URL}api/auth/google/callback`, "_self");
   };
 
   return (
@@ -101,6 +106,16 @@ export const RegisterPage = () => {
             </Text>
           </Flex>
         </form>
+        <Button
+          width="100%"
+          height="36px"
+          mb={2}
+          mt={2}
+          onClick={googleAuth}
+          //   isLoading={loading}
+        >
+          Register with Google
+        </Button>
       </Container>
     </Layout>
   );

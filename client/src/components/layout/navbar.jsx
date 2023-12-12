@@ -138,15 +138,30 @@ export default function Navbar() {
                 rounded={"full"}
                 variant={"link"}
                 cursor={"pointer"}
-                minW={0}
               >
-                <Avatar size={"sm"} src={"./user.gif"} />
+                {!user?.user?.image ? (
+                  <Avatar size={"sm"} src={"./user.gif"} />
+                ) : (
+                  <Image
+                    borderRadius="full"
+                    boxSize="28px"
+                    src={user?.user?.image}
+                    mr={2}
+                  />
+                )}
               </MenuButton>
               <MenuList fontSize={"10pt"}>
                 {/* <MenuItem as={"a"} href={`/users/${user.userId}`}>
                   Profile
                 </MenuItem> */}
-                <MenuItem>Explore</MenuItem>
+                <MenuItem
+                  as={"button"}
+                  onClick={() => {
+                    navigate("/explore");
+                  }}
+                >
+                  Explore
+                </MenuItem>
                 <MenuDivider />
                 <MenuItem
                   as={"button"}

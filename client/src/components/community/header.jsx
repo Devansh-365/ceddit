@@ -78,8 +78,13 @@ const Header = ({ community }) => {
                 pr={6}
                 pl={6}
                 onClick={() => {
-                  onJoinLeaveCommunity(community._id, user);
-                  navigate(0);
+                  if(user){                                                // If user logged in
+                    onJoinLeaveCommunity(community._id, user);
+                    navigate(0);
+                  }
+                  else{                                                    // If user not logged in
+                    navigate('/login');
+                  }
                 }}
               >
                 {community && isUserJoinCommunity() ? "Joined" : "Join"}

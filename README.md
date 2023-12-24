@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://ceddit-one.vercel.app/">
-    <img alt="ceddit" src="./client/public/logo192.png" width="125" />
+    <img alt="ceddit" src="./client/public/logo.png" width="125" />
   </a>
 </p>
 <h1 align="center">Ceddit✨️</h1>

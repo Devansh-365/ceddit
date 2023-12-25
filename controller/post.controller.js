@@ -46,6 +46,24 @@ const getPosts = async (req, res) => {
   }
 };
 
+const getSecPosts = async (req, res) => {
+  try {
+    const pageNumber = parseInt(req.query.pageNumber);
+    const size = 10;
+    const posts = await Post.find()
+      .skip(size * (pageNumber - 1))
+      .limit(size)
+      .sort({ createdAt: -1 })
+      .populate("user")
+      .populate("community");
+
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 const getPostById = async (req, res) => {
   const postId = req.params.id;
 
@@ -216,6 +234,7 @@ const downvotePost = async (req, res) => {
 module.exports = {
   createPost,
   getPosts,
+  getSecPosts,
   getPostById,
   deletePost,
   updatePost,

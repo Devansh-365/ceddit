@@ -33,7 +33,7 @@ const SearchPage = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          BASE_URL + "api/posts/search?posts=" + Query
+          BASE_URL + "api/posts/search/searched?posts=" + Query
         );
         const data = await response.json();
 

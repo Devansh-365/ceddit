@@ -14,7 +14,7 @@ export const Posts = ({ posts }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${BASE_URL}api/posts/1`);
+        const response = await fetch(`${BASE_URL}api/posts/page/1`);
         const data = await response.json();
         setItems(data);
       } catch (err) {
@@ -26,7 +26,7 @@ export const Posts = ({ posts }) => {
   }, []);
 
   const fetchMoreData = async () => {
-    await fetch(`${BASE_URL}api/posts/${index}`)
+    await fetch(`${BASE_URL}api/posts/page/${index}`)
       .then(async (res) => {
         const data = await res.json();
         setItems((prevItems) => [...prevItems, ...data]);

@@ -8,7 +8,7 @@ const createPost = async (post) => {
     if (!user) {
       return new Error("User not logged in");
     }
-    const res = await fetch(BASE_URL + "api/posts", {
+    const res = await fetch(BASE_URL + "/api/posts", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -25,13 +25,16 @@ const createPost = async (post) => {
 
 const getPosts = async () => {
   try {
-    const res = await fetch(BASE_URL + "api/posts");
+    const res = await fetch(BASE_URL + "api/posts/");
+    console.log(BASE_URL +"api/posts/")
     const data = await res.json();
     return data;
   } catch (err) {
     console.log(err);
   }
 };
+
+
 
 const getPost = async (postId) => {
   try {

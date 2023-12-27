@@ -66,6 +66,7 @@ const getSecPosts = async (req, res) => {
 
 const getPostById = async (req, res) => {
   const postId = req.params.id;
+  console.log(postId)
 
   try {
     const post = await Post.findById(postId)
@@ -137,6 +138,9 @@ const updatePost = async (req, res) => {
 const searchPosts = async (req, res) => {
   const query = req.query.posts;
   try {
+    if (!query) {
+      return res.status(400).json({ message: "Missing 'posts' query parameter" });
+    }
     const posts = await Post.find({
       $or: [
         { title: { $regex: new RegExp(query, "i") } },
@@ -145,6 +149,9 @@ const searchPosts = async (req, res) => {
     })
       .populate("user")
       .populate("community");
+    if (!posts) {
+      return res.status(404).json({ message: "No matching posts found" });
+    }
     res.json(posts);
   } catch (error) {
     console.error(error);
@@ -153,6 +160,7 @@ const searchPosts = async (req, res) => {
       .json({ message: "Internal Server Error", error: error.message });
   }
 };
+
 
 const upvotePost = async (req, res) => {
   const postId = req.params.postId;

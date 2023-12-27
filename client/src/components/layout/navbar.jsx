@@ -48,9 +48,9 @@ export default function Navbar() {
   }
 
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      navigate(`/search?posts=${event.target.value}`);
-    }
+    event.preventDeafault();
+
+    navigate(`/search/searched?posts=${event.target.value}`);
   };
 
   return (

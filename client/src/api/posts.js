@@ -34,6 +34,8 @@ const getPosts = async () => {
   }
 };
 
+
+
 const getPost = async (postId) => {
   try {
     const res = await fetch(BASE_URL + `api/posts/${postId}`);

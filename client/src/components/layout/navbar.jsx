@@ -47,10 +47,11 @@ export default function Navbar() {
     return Math.floor(Math.random() * (10000 - 5)) + 4;
   }
 
-  const handleKeyPress = (event) => {
-    event.preventDeafault();
-
-    navigate(`/search/searched?posts=${event.target.value}`);
+  const handleKeyPress = (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") {
+      navigate(`/search?posts=${e.target.value}`);
+    }
   };
 
   return (

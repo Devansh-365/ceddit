@@ -48,11 +48,12 @@ export default function Navbar() {
   }
 
   const handleKeyPress = (e) => {
-    e.preventDefault();
-    if (e.key === "Enter") {
+  
+    if (e.key === "Enter" || e.key === "Enter" || e.keyCode === 13 || e.keyCode === 66) {
       navigate(`/search?posts=${e.target.value}`);
     }
   };
+  
 
   return (
     <Box>

@@ -16,7 +16,7 @@ export const ExplorePage = () => {
   usePageMeta("Ceddit | Explore");
 
   const [posts, setPosts] = useState([]);
-  const [sortType, setSortType] = useState("createdAt");
+  const [sortType, setSortType] = useState("");
 
   const handleSort = (type) => {
     setSortType(type);
@@ -52,7 +52,7 @@ export const ExplorePage = () => {
           });
           break;
         default:
-          sortedPosts = data;
+          // sortedPosts = data;
       }
       setPosts(sortedPosts);
       socket.emit("postUpdated");

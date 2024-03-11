@@ -16,47 +16,48 @@ export const ExplorePage = () => {
   usePageMeta("Ceddit | Explore");
 
   const [posts, setPosts] = useState([]);
-  const [sortType, setSortType] = useState("createdAt");
+  const [sortType, setSortType] = useState("");
 
   const handleSort = (type) => {
     setSortType(type);
   };
 
   useEffect(() => {
-    getPosts().then((data) => {
-      let sortedPosts;
-      switch (sortType) {
-        case "createdAt":
-          sortedPosts = [...data].sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-          );
-          break;
-        case "upvotedBy":
-          sortedPosts = [...data].sort((a, b) => {
-            const aUpvotes = Array.isArray(a.upvotedBy)
-              ? a.upvotedBy.length
-              : 0;
-            const bUpvotes = Array.isArray(b.upvotedBy)
-              ? b.upvotedBy.length
-              : 0;
-            return bUpvotes - aUpvotes;
-          });
-          break;
-        case "commentCount":
-          sortedPosts = [...data].sort((a, b) => {
-            const aComments =
-              typeof a.commentCount === "number" ? a.commentCount : 0;
-            const bComments =
-              typeof b.commentCount === "number" ? b.commentCount : 0;
-            return bComments - aComments;
-          });
-          break;
-        default:
-          sortedPosts = data;
-      }
-      setPosts(sortedPosts);
-      socket.emit("postUpdated");
-    });
+      getPosts().then((data) => {
+        let sortedPosts;
+        switch (sortType) {
+          case "createdAt":
+            sortedPosts = [...data].sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
+            break;
+          case "upvotedBy":
+            sortedPosts = [...data].sort((a, b) => {
+              const aUpvotes = Array.isArray(a.upvotedBy)
+                ? a.upvotedBy.length
+                : 0;
+              const bUpvotes = Array.isArray(b.upvotedBy)
+                ? b.upvotedBy.length
+                : 0;
+              return bUpvotes - aUpvotes;
+            });
+            break;
+          case "commentCount":
+            sortedPosts = [...data].sort((a, b) => {
+              const aComments =
+                typeof a.commentCount === "number" ? a.commentCount : 0;
+              const bComments =
+                typeof b.commentCount === "number" ? b.commentCount : 0;
+              return bComments - aComments;
+            });
+            break;
+          default:
+            // sortedPosts = data;
+        }
+        setPosts(sortedPosts);
+        socket.emit("postUpdated");
+      });
+    
   }, [sortType, socket]);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export const ExplorePage = () => {
       <SecondaryLayout>
         <>
           {user ? <CreatePostBtn handleSort={handleSort} /> : null}
-          <Posts posts={posts} />
+          <Posts posts={posts} setPosts={setPosts} sortType={sortType}/>
         </>
         <Stack gap={4}>
           <SidePostCommunity />

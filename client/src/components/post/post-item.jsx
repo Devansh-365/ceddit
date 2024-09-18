@@ -85,9 +85,10 @@ const PostItem = ({ post }) => {
         if (!userDownvoted) {
           await downvotePost(post._id, user);
           setUserDownvoted(true);
-          setUpvoteCount(prevCount => prevCount - 1);
+          
           if (userUpvoted) {
             setUserUpvoted(false); 
+            setUpvoteCount(prevCount => prevCount - 1);
           }
         }  else {
           // Optional: Handle case for removing the downvote (toggle)

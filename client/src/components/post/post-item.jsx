@@ -33,8 +33,12 @@ const PostItem = ({ post }) => {
   const user = isLoggedIn();
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
+  const [userUpvoted, setUserUpvoted] = useState(post?.upvotedBy?.includes(user?.userId) || false);
+  const [userDownvoted, setUserDownvoted] = useState(post?.downvotedBy?.includes(user?.userId) || false);
+  const [upvoteCount, setUpvoteCount] = useState(post?.upvotedBy?.length || 0);
   const singlePostView = false;
   const { isOpen, onOpen, onClose } = useDisclosure();
+
 
   const isUserUpvote = (community) => {
     if (!user) return false;
@@ -50,7 +54,52 @@ const PostItem = ({ post }) => {
     event.stopPropagation();
     setLoadingDelete(true);
   };
+  const upvoteHandler = async () => {
+    try {
+      if (!user) return;
 
+      if (!userUpvoted) {
+        const response =await upvotePost(post._id, user);
+        setUserUpvoted(true);
+        setUpvoteCount(prevCount => prevCount + 1);
+        console.log(response)
+        if (userDownvoted) {
+          setUserDownvoted(false); 
+          setUpvoteCount(prevCount => prevCount -1);
+        }
+        else {
+          // Optional: Handle case for removing the upvote (toggle)
+          await upvotePost(post._id, user);
+          setUserUpvoted(false);
+          setUpvoteCount(prevCount => prevCount - 1); // Decrement the count
+        }
+      } 
+      
+    } catch (error) {
+      console.log(error);
+    }}
+    const downvoteHandler = async () => {
+      try {
+        if (!user) return;
+  
+        if (!userDownvoted) {
+          await downvotePost(post._id, user);
+          setUserDownvoted(true);
+          setUpvoteCount(prevCount => prevCount - 1);
+          if (userUpvoted) {
+            setUserUpvoted(false); 
+          }
+        }  else {
+          // Optional: Handle case for removing the downvote (toggle)
+          await upvotePost(post._id, user);
+          setUserDownvoted(false);
+          setUpvoteCount(prevCount => prevCount + 1); // Increment the count
+        }
+       
+      } catch (error) {
+        console.log(error);
+      }
+    };
   return (
     <>
       <Flex
@@ -69,31 +118,23 @@ const PostItem = ({ post }) => {
           width="40px"
           borderRadius={singlePostView ? "0" : "3px 0px 0px 3px"}
         >
-          <Icon
-            as={isUserUpvote() ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
-            color={isUserUpvote() ? "brand.100" : "gray.400"}
-            fontSize={22}
-            cursor="pointer"
-            onClick={() => {
-              upvotePost(post._id, user);
-            }}
-          />
+           <Icon
+          as={userUpvoted ? IoArrowUpCircleSharp : IoArrowUpCircleOutline}
+          color={userUpvoted ? "brand.100" : "gray.400"}
+          fontSize={22}
+          cursor="pointer"
+          onClick={upvoteHandler}
+        />
           <Text fontSize="9pt" fontWeight={600}>
-            {post ? post?.upvotedBy?.length : 0}
+            { upvoteCount }
           </Text>
           <Icon
-            as={
-              isUserDownvote()
-                ? IoArrowDownCircleSharp
-                : IoArrowDownCircleOutline
-            }
-            color={isUserDownvote() ? "#4379FF" : "gray.400"}
-            fontSize={22}
-            cursor="pointer"
-            onClick={() => {
-              downvotePost(post._id, user);
-            }}
-          />
+          as={userDownvoted ? IoArrowDownCircleSharp : IoArrowDownCircleOutline}
+          color={userDownvoted ? "#4379FF" : "gray.400"}
+          fontSize={22}
+          cursor="pointer"
+          onClick={downvoteHandler}
+        />
         </Flex>
         <Flex direction="column" width="100%">
           <Stack spacing={1} p="10px 10px">
